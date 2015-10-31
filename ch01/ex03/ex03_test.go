@@ -1,5 +1,5 @@
 // Benchmark implementations of echo
-package ex3
+package ex03
 
 import (
 	"strings"
