@@ -7,11 +7,12 @@ import (
 )
 
 var (
-	input  = make([]string, 0, '~'-'!'+1)
+	input  = make([]string, 0, '~'-'!'+2)
 	output string
 )
 
 func init() {
+	input = append(input, "Starting with a very long parameter")
 	for i := '!'; i <= '~'; i++ {
 		input = append(input, string(i))
 	}
