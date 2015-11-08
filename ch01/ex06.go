@@ -1,4 +1,4 @@
-// Ex05 generates GIF animations of random Lissajous figures in multiple colors
+// Ex05 generates GIF animations of random Lissajous figures in multiple colors.
 package main
 
 import (
@@ -14,13 +14,16 @@ import (
 
 var palette = []color.Color{color.Black}
 
-const blackIndex = 0 // first color in palette
+const paletteSize = 255
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
-	var i uint8
-	for i = 1; i < 65; i++ {
-		palette = append(palette, color.RGBA{i * 4, 0, 255 - i*4, 255})
+	for i := 1; i <= paletteSize; i++ {
+		radians := float64(i) * 2 * math.Pi / paletteSize
+		r := math.Sin(radians) * math.MaxUint8
+		g := math.Sin(radians+2*math.Pi/3) * math.MaxUint8
+		b := math.Sin(radians+4*math.Pi/3) * math.MaxUint8
+		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
 	lissajous(os.Stdout)
 }
@@ -43,7 +46,7 @@ func lissajous(out io.Writer) {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(i))
+				uint8(t*math.MaxUint8/(cycles*2*math.Pi)))
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
