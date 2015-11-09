@@ -1,4 +1,4 @@
-// Ex05 generates GIF animations of random Lissajous figures in multiple colors.
+// Ex05 generates GIF animations of random Lissajous curves in multiple colors.
 package main
 
 import (
@@ -18,13 +18,32 @@ const paletteSize = 255
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
-	for i := 1; i <= paletteSize; i++ {
-		radians := float64(i) * 2 * math.Pi / paletteSize
-		r := math.Sin(radians) * math.MaxUint8
-		g := math.Sin(radians+2*math.Pi/3) * math.MaxUint8
-		b := math.Sin(radians+4*math.Pi/3) * math.MaxUint8
+
+	// Red turning to Green
+	for i := 1; i < paletteSize/3; i++ {
+		offset := i * 3
+		r := math.MaxUint8 - offset
+		g := offset
+		b := 0
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
+	// Green turning to Blue
+	for i := paletteSize / 3; i < 2*paletteSize/3; i++ {
+		offset := (i - paletteSize/3) * 3
+		r := 0
+		g := math.MaxUint8 - offset
+		b := offset
+		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+	}
+	// Blue turning to Red
+	for i := 2 * paletteSize / 3; i <= paletteSize; i++ {
+		offset := (i - 2*paletteSize/3) * 3
+		r := offset
+		g := 0
+		b := math.MaxUint8 - offset
+		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+	}
+
 	lissajous(os.Stdout)
 }
 
@@ -32,7 +51,7 @@ func lissajous(out io.Writer) {
 	const (
 		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
-		size    = 100   // image canvas covers [-size..+size]
+		size    = 300   // image canvas covers [-size..+size]
 		nframes = 64    // number of animation frames
 		delay   = 8     // delay between frames in 10ms units
 	)
