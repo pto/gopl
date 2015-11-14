@@ -1,4 +1,4 @@
-// Benchmark implementations of echo
+// Benchmark implementations of string concatenation as used in the Echo programs.
 package ex03
 
 import (
@@ -12,47 +12,47 @@ var (
 )
 
 func init() {
-	input = append(input, "Starting with a very long parameter")
+	input = append(input, "Starting with a very long parameter to get things underway in style")
 	for i := '!'; i <= '~'; i++ {
 		input = append(input, string(i))
 	}
 	output = strings.Join(input, " ")
 }
 
-func TestIndex(t *testing.T) {
+func TestConcatIndex(t *testing.T) {
 	result := ConcatIndex(input)
 	if result != output {
 		t.Fatalf("result %s does not match expected %s", result, output)
 	}
 }
 
-func TestRange(t *testing.T) {
+func TestConcatRange(t *testing.T) {
 	result := ConcatRange(input)
 	if result != output {
 		t.Fatalf("result %s does not match expected %s", result, output)
 	}
 }
 
-func TestJoin(t *testing.T) {
+func TestConcatJoin(t *testing.T) {
 	result := ConcatJoin(input)
 	if result != output {
 		t.Fatalf("result %s does not match expected %s", result, output)
 	}
 }
 
-func BenchmarkIndex(b *testing.B) {
+func BenchmarkConcatIndex(b *testing.B) {
 	for i := 1; i < b.N; i++ {
 		ConcatIndex(input)
 	}
 }
 
-func BenchmarkRange(b *testing.B) {
+func BenchmarkConcatRange(b *testing.B) {
 	for i := 1; i < b.N; i++ {
 		ConcatRange(input)
 	}
 }
 
-func BenchmarkJoin(b *testing.B) {
+func BenchmarkConcatJoin(b *testing.B) {
 	for i := 1; i < b.N; i++ {
 		ConcatJoin(input)
 	}

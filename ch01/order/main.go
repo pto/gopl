@@ -1,4 +1,4 @@
-// order demonstrates referencing identifiers out of order.
+// Order demonstrates referencing identifiers out of order.
 package main
 
 import "fmt"

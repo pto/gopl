@@ -1,4 +1,4 @@
-// Print all command line arguments.
+// Ex01 prints all command line arguments.
 package main
 
 import (

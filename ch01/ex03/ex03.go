@@ -1,4 +1,4 @@
-// Benchmark implementations of echo
+// Ex03 has multiple implementations of string concatenation for benchmark testing.
 package ex03
 
 import (
