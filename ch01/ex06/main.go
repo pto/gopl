@@ -51,7 +51,7 @@ func lissajous(out io.Writer) {
 	const (
 		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
-		size    = 300   // image canvas covers [-size..+size]
+		size    = 100   // image canvas covers [-size..+size]
 		nframes = 64    // number of animation frames
 		delay   = 8     // delay between frames in 10ms units
 	)
@@ -64,8 +64,9 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
+			// Range from 1 to MaxUint8
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(t*math.MaxUint8/(cycles*2*math.Pi)))
+				uint8(t*(math.MaxUint8-1)/(cycles*2*math.Pi))+1)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
