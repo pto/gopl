@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	counts := make(map[string](map[string]int))
+	counts := make(map[string](map[string]int)) // counts[line][file]
 	files := os.Args[1:]
 	if len(files) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
@@ -42,14 +42,14 @@ func main() {
 	}
 }
 
-func countLines(f *os.File, name string, counts map[string](map[string]int)) {
+func countLines(f *os.File, filename string, counts map[string](map[string]int)) {
 	input := bufio.NewScanner(f)
 	for input.Scan() {
 		line := input.Text()
 		if counts[line] == nil {
 			counts[line] = make(map[string]int)
 		}
-		counts[line][name]++
+		counts[line][filename]++
 	}
 	// NOTE: ignoring potential errors from input.Err()
 }
