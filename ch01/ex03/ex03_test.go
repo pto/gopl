@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	input  = make([]string, 0, '~'-'!'+2)
-	output string
+	input          = make([]string, 0, '~'-'!'+2) // ~ through ! inclusive, and one more
+	expectedOutput string
 )
 
 func init() {
@@ -16,27 +16,27 @@ func init() {
 	for i := '!'; i <= '~'; i++ {
 		input = append(input, string(i))
 	}
-	output = strings.Join(input, " ")
+	expectedOutput = strings.Join(input, " ")
 }
 
 func TestConcatIndex(t *testing.T) {
 	result := ConcatIndex(input)
-	if result != output {
-		t.Fatalf("result %s does not match expected %s", result, output)
+	if result != expectedOutput {
+		t.Fatalf("result %s does not match expected %s", result, expectedOutput)
 	}
 }
 
 func TestConcatRange(t *testing.T) {
 	result := ConcatRange(input)
-	if result != output {
-		t.Fatalf("result %s does not match expected %s", result, output)
+	if result != expectedOutput {
+		t.Fatalf("result %s does not match expected %s", result, expectedOutput)
 	}
 }
 
 func TestConcatJoin(t *testing.T) {
 	result := ConcatJoin(input)
-	if result != output {
-		t.Fatalf("result %s does not match expected %s", result, output)
+	if result != expectedOutput {
+		t.Fatalf("result %s does not match expected %s", result, expectedOutput)
 	}
 }
 
