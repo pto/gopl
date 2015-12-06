@@ -1,4 +1,4 @@
-// Ex08 prints the content found at a URL, and adds a protocol if it is missing.
+// Ex08 prints the content found at a URL, and adds "http://" if it is missing.
 package main
 
 import (
@@ -11,7 +11,8 @@ import (
 
 func main() {
 	for _, url := range os.Args[1:] {
-		if !strings.Contains(url, ":") {
+		if !strings.HasPrefix(url, "http://") &&
+			!strings.HasPrefix(url, "https://") {
 			url = "http://" + url
 		}
 		resp, err := http.Get(url)
