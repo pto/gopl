@@ -6,8 +6,10 @@ import (
 	"image/color"
 	"image/gif"
 	"io"
+	"log"
 	"math"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
 )
@@ -42,6 +44,15 @@ func main() {
 		g := 0
 		b := math.MaxUint8 - offset
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "web" {
+		handler := func(w http.ResponseWriter, r *http.Request) {
+			lissajous(w)
+		}
+		http.HandleFunc("/", handler)
+		log.Fatal(http.ListenAndServe("localhost:8000", nil))
+		return
 	}
 
 	lissajous(os.Stdout)
