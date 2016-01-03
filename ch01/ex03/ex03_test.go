@@ -1,4 +1,5 @@
-// Benchmark implementations of string concatenation as used in the Echo programs.
+// Benchmark implementations of string concatenation as used in the Echo
+// programs.
 package ex03
 
 import (
@@ -7,12 +8,12 @@ import (
 )
 
 var (
-	input          = make([]string, 0, '~'-'!'+2) // ~ through ! inclusive, and one more
+	input          = make([]string, 0, '~'-'!'+2) // ! through ~ inclusive + 1
 	expectedOutput string
 )
 
 func init() {
-	input = append(input, "Starting with a very long parameter to get things underway in style")
+	input = append(input, "Starting with a very long parameter just for fun")
 	for i := '!'; i <= '~'; i++ {
 		input = append(input, string(i))
 	}
