@@ -1,5 +1,5 @@
-// Ex03 has multiple implementations of string concatenation for benchmark
-// testing.
+// Package ex03 has multiple implementations of string concatenation for
+// benchmark testing.
 package ex03
 
 import (

@@ -1,5 +1,3 @@
-// Benchmark implementations of string concatenation as used in the Echo
-// programs.
 package ex03
 
 import (
@@ -8,7 +6,7 @@ import (
 )
 
 var (
-	input          = make([]string, 0, '~'-'!'+2) // ! through ~ inclusive + 1
+	input          = make([]string, 0, '~'-'!'+2) // ! to ~ inclusive, plus 1
 	expectedOutput string
 )
 
