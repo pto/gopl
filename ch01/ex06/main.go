@@ -16,7 +16,7 @@ import (
 
 var palette = []color.Color{color.Black}
 
-const paletteSize = 255
+const paletteSize = 256
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -38,7 +38,7 @@ func main() {
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
 	// Blue turning to Red
-	for i := 2 * paletteSize / 3; i <= paletteSize; i++ {
+	for i := 2 * paletteSize / 3; i < paletteSize; i++ {
 		offset := (i - 2*paletteSize/3) * 3
 		r := offset
 		g := 0
@@ -51,7 +51,7 @@ func main() {
 			lissajous(w)
 		}
 		http.HandleFunc("/", handler)
-		log.Fatal(http.ListenAndServe("localhost:8000", nil))
+		log.Fatal(http.ListenAndServe(":8000", nil))
 		return
 	}
 
@@ -75,7 +75,7 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			// Range from 1 to MaxUint8
+			// Range from 1 to MaxUint8 (use full pallette exactly once)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
 				uint8(t*(math.MaxUint8-1)/(cycles*2*math.Pi))+1)
 		}
