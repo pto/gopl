@@ -1,6 +1,5 @@
 // Ex04 prints the count, text and filename of lines that appear more than once
-// in the input.  It reads from stdin or from a list of named files
-// and only uses Go features that have been introduced so far.
+// in the input.  It reads from stdin or from a list of named files.
 package main
 
 import (
@@ -10,7 +9,7 @@ import (
 )
 
 func main() {
-	counts := make(map[string](map[string]int)) // counts[line][file]
+	counts := make(map[string](map[string]int)) // counts[line][filename]
 	files := os.Args[1:]
 	if len(files) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
@@ -25,19 +24,16 @@ func main() {
 			f.Close()
 		}
 	}
-	for line, filenames := range counts {
+	for line, files := range counts {
 		linecount := 0
-		for _, filecount := range filenames {
+		filenames, sep := "", ""
+		for filename, filecount := range files {
 			linecount += filecount
+			filenames += sep + filename
+			sep = " "
 		}
 		if linecount > 1 {
-			fmt.Printf("%d\t%s (", linecount, line)
-			sep := ""
-			for name, _ := range filenames {
-				fmt.Printf("%s%s", sep, name)
-				sep = " "
-			}
-			fmt.Println(")")
+			fmt.Printf("%d\t%s (%s)\n", linecount, line, filenames)
 		}
 	}
 }
