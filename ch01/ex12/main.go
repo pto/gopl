@@ -1,4 +1,6 @@
-// Ex12 serves GIF animations of random Lissajous curves in multiple colors.
+// Ex12 serves GIF animations of random Lissajous curves in multiple colors,
+// accepting query parameters for frequency, phase step and cycles, number of
+// frames, delay between frames, image size and angular resolution.
 package main
 
 import (
@@ -63,30 +65,43 @@ func main() {
 		if err != nil {
 			cycles = 5
 		}
-		lissajous(w, freq, phaseStep, cycles)
+		nframes, err := strconv.Atoi(r.Form.Get("nframes"))
+		if err != nil {
+			nframes = 64
+		}
+		delay, err := strconv.Atoi(r.Form.Get("delay"))
+		if err != nil {
+			delay = 8
+		}
+		size, err := strconv.Atoi(r.Form.Get("size"))
+		if err != nil {
+			size = 100
+		}
+		res, err := strconv.ParseFloat(r.Form.Get("res"), 64)
+		if err != nil {
+			res = 0.001
+		}
+		lissajous(w, freq, phaseStep, cycles, nframes, delay, size, res)
 	}
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
-func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64) {
-	const (
-		res     = 0.001 // angular resolution
-		size    = 100   // image canvas covers [-size..+size]
-		nframes = 64    // number of animation frames
-		delay   = 8     // delay between frames in 10ms units
-	)
+func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
+	nframes int, delay int, size int, res float64) {
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
-		for t := 0.0; t < cycles*2*math.Pi; t += res {
+		upperLimit := cycles * 2 * math.Pi
+		for t := 0.0; t < upperLimit; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
 			// Range from 1 to MaxUint8
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(t*(math.MaxUint8-1)/(cycles*2*math.Pi))+1)
+			img.SetColorIndex(size+int(x*float64(size)+0.5),
+				size+int(y*float64(size)+0.5),
+				uint8(t*(math.MaxUint8-1)/upperLimit)+1)
 		}
 		phase += phaseStep
 		anim.Delay = append(anim.Delay, delay)
