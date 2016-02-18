@@ -18,12 +18,12 @@ var palette = []color.Color{color.Black}
 
 const paletteSize = 256
 
-func addToPalette(r, g, b int) {
-	palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
-}
-
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
+
+	addToPalette := func(r, g, b int) {
+		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+	}
 
 	for i := 1; i < paletteSize; i += 3 {
 		addToPalette(math.MaxUint8-i, i, 0) // Red turning to Green
