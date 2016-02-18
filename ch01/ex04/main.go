@@ -17,7 +17,7 @@ func main() {
 		for _, arg := range files {
 			f, err := os.Open(arg)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "dup2: %v\n", err)
+				fmt.Fprintln(os.Stderr, "dup2:", err)
 				continue
 			}
 			countLines(f, arg, counts)
@@ -30,7 +30,7 @@ func main() {
 		for filename, filecount := range files {
 			linecount += filecount
 			filenames += sep + filename
-			sep = " "
+			sep = ", "
 		}
 		if linecount > 1 {
 			fmt.Printf("%d\t%s (%s)\n", linecount, line, filenames)
