@@ -1,4 +1,4 @@
-// Ex09 prints the content found at a URL and the HTTP status code.
+// Ex09 outputs the content found at a URL and the HTTP status code.
 package main
 
 import (
