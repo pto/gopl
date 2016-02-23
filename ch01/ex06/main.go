@@ -21,29 +21,18 @@ const paletteSize = 256
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	// Red turning to Green
-	for i := 1; i < paletteSize/3; i++ {
-		offset := i * 3
-		r := math.MaxUint8 - offset
-		g := offset
-		b := 0
+	addToPalette := func(r, g, b int) {
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
-	// Green turning to Blue
-	for i := paletteSize / 3; i < 2*paletteSize/3; i++ {
-		offset := (i - paletteSize/3) * 3
-		r := 0
-		g := math.MaxUint8 - offset
-		b := offset
-		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+
+	for i := 1; i < paletteSize; i += 3 {
+		addToPalette(math.MaxUint8-i, i, 0) // Red turning to Green
 	}
-	// Blue turning to Red
-	for i := 2 * paletteSize / 3; i < paletteSize; i++ {
-		offset := (i - 2*paletteSize/3) * 3
-		r := offset
-		g := 0
-		b := math.MaxUint8 - offset
-		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
+	for i := 1; i < paletteSize; i += 3 {
+		addToPalette(0, math.MaxUint8-1, i) // Green turning to Blue
+	}
+	for i := 1; i < paletteSize; i += 3 {
+		addToPalette(i, 0, math.MaxUint8-i) // Blue turning to Red
 	}
 
 	if len(os.Args) > 1 && os.Args[1] == "web" {
