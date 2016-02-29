@@ -1,5 +1,5 @@
 // Ex04 prints the count, text and filename of lines that appear more than once
-// in the input.  It reads from stdin or from a list of named files.
+// in the input.  It reads from Stdin or from a list of named files.
 package main
 
 import (
@@ -8,8 +8,15 @@ import (
 	"os"
 )
 
+type countMap map[string](map[string]int)
+
 func main() {
-	counts := make(map[string](map[string]int)) // counts[line][filename]
+	counts := make(countMap) // counts[line][filename]
+	processFiles(counts)
+	printResults(counts)
+}
+
+func processFiles(counts countMap) {
 	files := os.Args[1:]
 	if len(files) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
@@ -24,6 +31,9 @@ func main() {
 			f.Close()
 		}
 	}
+}
+
+func printResults(counts countMap) {
 	for line, files := range counts {
 		linecount := 0
 		filenames, sep := "", ""
@@ -38,7 +48,7 @@ func main() {
 	}
 }
 
-func countLines(f *os.File, filename string, counts map[string](map[string]int)) {
+func countLines(f *os.File, filename string, counts countMap) {
 	input := bufio.NewScanner(f)
 	for input.Scan() {
 		line := input.Text()

@@ -20,23 +20,20 @@ func init() {
 
 func check(result string, t *testing.T) {
 	if result != expectedOutput {
-		t.Fatalf("result %s does not match expected %s", result, expectedOutput)
+		t.Fatalf("result %q does not match expected %q", result, expectedOutput)
 	}
 }
 
 func TestConcatIndex(t *testing.T) {
-	result := ConcatIndex(input)
-	check(result, t)
+	check(ConcatIndex(input), t)
 }
 
 func TestConcatRange(t *testing.T) {
-	result := ConcatRange(input)
-	check(result, t)
+	check(ConcatRange(input), t)
 }
 
 func TestConcatJoin(t *testing.T) {
-	result := ConcatJoin(input)
-	check(result, t)
+	check(ConcatJoin(input), t)
 }
 
 func BenchmarkConcatIndex(b *testing.B) {
