@@ -49,9 +49,9 @@ func printResults(counts countMap) {
 }
 
 func countLines(f *os.File, filename string, counts countMap) {
-	input := bufio.NewScanner(f)
-	for input.Scan() {
-		line := input.Text()
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
 		if counts[line] == nil {
 			counts[line] = make(map[string]int)
 		}
