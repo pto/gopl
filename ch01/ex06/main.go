@@ -26,13 +26,13 @@ func main() {
 	}
 
 	for i := 1; i < paletteSize; i += 3 {
-		addToPalette(math.MaxUint8-i, i, 0) // Red turning to Green
+		addToPalette(paletteSize-i, i, 0) // Red turning to Green
 	}
 	for i := 1; i < paletteSize; i += 3 {
-		addToPalette(0, math.MaxUint8-1, i) // Green turning to Blue
+		addToPalette(0, paletteSize-1, i) // Green turning to Blue
 	}
 	for i := 1; i < paletteSize; i += 3 {
-		addToPalette(i, 0, math.MaxUint8-i) // Blue turning to Red
+		addToPalette(i, 0, paletteSize-i) // Blue turning to Red
 	}
 
 	if len(os.Args) > 1 && os.Args[1] == "web" {
@@ -64,9 +64,9 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			// Range from 1 to MaxUint8 (use full pallette exactly once)
+			// Range from 1 to paletteSize (use full pallette exactly once)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(t*(math.MaxUint8-1)/(cycles*2*math.Pi))+1)
+				uint8(t*(paletteSize-1)/(cycles*2*math.Pi))+1)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
