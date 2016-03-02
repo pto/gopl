@@ -2,6 +2,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -43,17 +44,77 @@ func main() {
 				fmt.Printf("Trailer[%q]: %v\n", k, strings.Join(v, ", "))
 			}
 			if resp.TLS != nil {
-				fmt.Println("TLS Version:", resp.TLS.Version)
+				fmt.Println("TLS Version:",
+					tlsVersion(resp.TLS.Version))
 				fmt.Println("TLS HandshakeComplete:",
 					resp.TLS.HandshakeComplete)
-				fmt.Println("TLS DidResume:", resp.TLS.DidResume)
-				fmt.Println("TLS CipherSuite:", resp.TLS.CipherSuite)
+				fmt.Println("TLS DidResume:",
+					resp.TLS.DidResume)
+				fmt.Println("TLS CipherSuite:",
+					cipherSuite(resp.TLS.CipherSuite))
 				fmt.Println("TLS NegotiatedProtocol:",
 					resp.TLS.NegotiatedProtocol)
 				fmt.Println("TLS NegotiatedProtocolIsMutual:",
 					resp.TLS.NegotiatedProtocolIsMutual)
-				fmt.Println("TLS ServerName:", resp.TLS.ServerName)
 			}
 		}
+	}
+}
+
+func cipherSuite(cs uint16) string {
+	switch cs {
+	case tls.TLS_RSA_WITH_RC4_128_SHA:
+		return "TLS_RSA_WITH_RC4_128_SHA"
+	case tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA:
+		return "TLS_RSA_WITH_RC4_128_SHA"
+	case tls.TLS_RSA_WITH_AES_128_CBC_SHA:
+		return "TLS_RSA_WITH_AES_128_CBC_SHA"
+	case tls.TLS_RSA_WITH_AES_256_CBC_SHA:
+		return "TLS_RSA_WITH_AES_256_CBC_SHA"
+	case tls.TLS_RSA_WITH_AES_128_GCM_SHA256:
+		return "TLS_RSA_WITH_AES_128_GCM_SHA256"
+	case tls.TLS_RSA_WITH_AES_256_GCM_SHA384:
+		return "TLS_RSA_WITH_AES_256_GCM_SHA384"
+	case tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA:
+		return "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA"
+	case tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA:
+		return "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
+	case tls.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA:
+		return "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
+	case tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA:
+		return "TLS_ECDHE_RSA_WITH_RC4_128_SHA"
+	case tls.TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:
+		return "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA"
+	case tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:
+		return "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
+	case tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:
+		return "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+	case tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:
+		return "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+	case tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:
+		return "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+	case tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384:
+		return "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+	case tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:
+		return "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+	case tls.TLS_FALLBACK_SCSV:
+		return "TLS_FALLBACK_SCSV"
+	default:
+		return "(unknown)"
+	}
+}
+
+func tlsVersion(tv uint16) string {
+	switch tv {
+	case tls.VersionSSL30:
+		return "VersionSSL30"
+	case tls.VersionTLS10:
+		return "VersionTLS10"
+	case tls.VersionTLS11:
+		return "VersionTLS11"
+	case tls.VersionTLS12:
+		return "VersionTLS12"
+	default:
+		return "(unknown)"
 	}
 }
