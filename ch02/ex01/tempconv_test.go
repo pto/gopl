@@ -23,6 +23,16 @@ func TestConversions(t *testing.T) {
 		t.Error("C/K/F/C Conversion failed on boiling point")
 	}
 
+	if KToC(FToK(CToF(AbsoluteZeroC))) != AbsoluteZeroC {
+		t.Error("C/F/K/C Conversion failed on absolute zero")
+	}
+	if KToC(FToK(CToF(FreezingC))) != FreezingC {
+		t.Error("C/F/K/C Conversion failed on freezing point")
+	}
+	if KToC(FToK(CToF(BoilingC))) != BoilingC {
+		t.Error("C/F/K/C Conversion failed on boiling point")
+	}
+
 	if KToC(CToK(AbsoluteZeroC)) != AbsoluteZeroC {
 		t.Error("C/K/C Conversion failed on absolute zero")
 	}
