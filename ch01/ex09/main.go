@@ -1,4 +1,5 @@
-// Ex09 outputs the content found at a URL and the HTTP status code.
+// Ex09 outputs the content found at a URL, the HTTP status code, and other
+// response fields.
 package main
 
 import (
@@ -28,36 +29,40 @@ func main() {
 			os.Exit(1)
 		}
 		if !*verbose {
-			fmt.Println(b)
+			fmt.Println(string(b))
 		}
 		fmt.Println("Status:", resp.Status)
 		if *verbose {
-			fmt.Println("Proto:", resp.Proto)
-			for k, v := range resp.Header {
-				fmt.Printf("Header[%q]: %v\n", k, strings.Join(v, ", "))
-			}
-			fmt.Println("ContentLength:", resp.ContentLength)
-			fmt.Println("TransferEncoding:",
-				strings.Join(resp.TransferEncoding, ", "))
-			fmt.Println("Close:", resp.Close)
-			for k, v := range resp.Trailer {
-				fmt.Printf("Trailer[%q]: %v\n", k, strings.Join(v, ", "))
-			}
-			if resp.TLS != nil {
-				fmt.Println("TLS Version:",
-					tlsVersion(resp.TLS.Version))
-				fmt.Println("TLS HandshakeComplete:",
-					resp.TLS.HandshakeComplete)
-				fmt.Println("TLS DidResume:",
-					resp.TLS.DidResume)
-				fmt.Println("TLS CipherSuite:",
-					cipherSuite(resp.TLS.CipherSuite))
-				fmt.Println("TLS NegotiatedProtocol:",
-					resp.TLS.NegotiatedProtocol)
-				fmt.Println("TLS NegotiatedProtocolIsMutual:",
-					resp.TLS.NegotiatedProtocolIsMutual)
-			}
+			printResponseFields(resp)
 		}
+	}
+}
+
+func printResponseFields(resp *http.Response) {
+	fmt.Println("Proto:", resp.Proto)
+	for k, v := range resp.Header {
+		fmt.Printf("Header[%q]: %v\n", k, strings.Join(v, ", "))
+	}
+	fmt.Println("ContentLength:", resp.ContentLength)
+	fmt.Println("TransferEncoding:",
+		strings.Join(resp.TransferEncoding, ", "))
+	fmt.Println("Close:", resp.Close)
+	for k, v := range resp.Trailer {
+		fmt.Printf("Trailer[%q]: %v\n", k, strings.Join(v, ", "))
+	}
+	if resp.TLS != nil {
+		fmt.Println("TLS Version:",
+			tlsVersion(resp.TLS.Version))
+		fmt.Println("TLS HandshakeComplete:",
+			resp.TLS.HandshakeComplete)
+		fmt.Println("TLS DidResume:",
+			resp.TLS.DidResume)
+		fmt.Println("TLS CipherSuite:",
+			cipherSuite(resp.TLS.CipherSuite))
+		fmt.Println("TLS NegotiatedProtocol:",
+			resp.TLS.NegotiatedProtocol)
+		fmt.Println("TLS NegotiatedProtocolIsMutual:",
+			resp.TLS.NegotiatedProtocolIsMutual)
 	}
 }
 
