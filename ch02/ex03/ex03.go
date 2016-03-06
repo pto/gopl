@@ -22,10 +22,19 @@ func PopCount(x uint64) int {
 		pc[byte(x>>(7*8))])
 }
 
-func PopCountLoop(x uint64) int {
+func PopCountLoop1(x uint64) int {
 	count := 0
 	for i := uint(0); i < 8; i++ {
 		count += int(pc[byte(x>>(i*8))])
+	}
+	return count
+}
+
+func PopCountLoop2(x uint64) int {
+	count := 0
+	for i := 0; i < 8; i++ {
+		count += int(pc[byte(x)])
+		x >>= 8
 	}
 	return count
 }
