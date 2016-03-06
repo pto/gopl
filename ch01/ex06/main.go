@@ -29,7 +29,7 @@ func main() {
 		addToPalette(paletteSize-i, i, 0) // Red turning to Green
 	}
 	for i := 1; i < paletteSize; i += 3 {
-		addToPalette(0, paletteSize-1, i) // Green turning to Blue
+		addToPalette(0, paletteSize-i, i) // Green turning to Blue
 	}
 	for i := 1; i < paletteSize; i += 3 {
 		addToPalette(i, 0, paletteSize-i) // Blue turning to Red
