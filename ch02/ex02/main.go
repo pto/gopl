@@ -12,25 +12,23 @@ import (
 
 func main() {
 	if len(os.Args) > 1 {
-		for i, arg := range os.Args[1:] {
+		for _, arg := range os.Args[1:] {
 			display(arg)
-			if i < len(os.Args)-2 {
-				fmt.Println()
-			}
 		}
 	} else {
-		s := bufio.NewScanner(os.Stdin)
-		s.Split(bufio.ScanWords)
-		var sep string
-		for s.Scan() {
-			fmt.Print(sep)
-			display(s.Text())
-			sep = "\n"
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Split(bufio.ScanWords)
+		for scanner.Scan() {
+			display(scanner.Text())
 		}
 	}
 }
 
+var sep string
+
 func display(val string) {
+	fmt.Print(sep)
+	sep = "\n"
 	x, err := strconv.ParseFloat(val, 64)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ex02: %v\n", err)
