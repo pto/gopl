@@ -5,20 +5,16 @@ import (
 	"testing"
 )
 
-var (
-	input          = make([]string, 0, '~'-'!'+2) // ! to ~ inclusive, plus 1
-	expectedOutput string
-)
+var input []string
 
 func init() {
-	input = append(input, "Starting with a very long parameter just for fun")
 	for i := '!'; i <= '~'; i++ {
-		input = append(input, string(i))
+		input = append(input, strings.Repeat(string(i), 10))
 	}
-	expectedOutput = strings.Join(input, " ")
 }
 
 func check(result string, t *testing.T) {
+	expectedOutput := strings.Join(input, " ")
 	if result != expectedOutput {
 		t.Fatalf("result %q does not match expected %q", result, expectedOutput)
 	}
