@@ -2,9 +2,7 @@
 // benchmark testing.
 package ex03
 
-import (
-	"strings"
-)
+import "strings"
 
 func ConcatIndex(slice []string) string {
 	var s, sep string
