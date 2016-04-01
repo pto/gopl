@@ -15,8 +15,8 @@ func ConcatIndex(slice []string) string {
 
 func ConcatRange(slice []string) string {
 	var s, sep string
-	for _, d := range slice {
-		s += sep + d
+	for _, elem := range slice {
+		s += sep + elem
 		sep = " "
 	}
 	return s

@@ -9,7 +9,7 @@ var input = make([]string, 0, '~'-'!'+1)
 
 func init() {
 	for i := '!'; i <= '~'; i++ {
-		input = append(input, strings.Repeat(string(i), 10))
+		input = append(input, strings.Repeat(string(i), 20))
 	}
 }
 
