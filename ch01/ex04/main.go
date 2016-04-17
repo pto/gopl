@@ -17,20 +17,32 @@ func main() {
 }
 
 func processFiles(counts countMap) {
-	files := os.Args[1:]
-	if len(files) == 0 {
+	filenames := os.Args[1:]
+	if len(filenames) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
 	} else {
-		for _, arg := range files {
-			f, err := os.Open(arg)
+		for _, filename := range filenames {
+			file, err := os.Open(filename)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, "dup2:", err)
 				continue
 			}
-			countLines(f, arg, counts)
-			f.Close()
+			countLines(file, filename, counts)
+			file.Close()
 		}
 	}
+}
+
+func countLines(file *os.File, filename string, counts countMap) {
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if counts[line] == nil {
+			counts[line] = make(map[string]int)
+		}
+		counts[line][filename]++
+	}
+	// NOTE: ignoring potential errors from input.Err()
 }
 
 func printResults(counts countMap) {
@@ -46,16 +58,4 @@ func printResults(counts countMap) {
 			fmt.Printf("%d\t%s (%s)\n", linecount, line, filenames)
 		}
 	}
-}
-
-func countLines(f *os.File, filename string, counts countMap) {
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if counts[line] == nil {
-			counts[line] = make(map[string]int)
-		}
-		counts[line][filename]++
-	}
-	// NOTE: ignoring potential errors from input.Err()
 }
