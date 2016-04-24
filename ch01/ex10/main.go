@@ -19,7 +19,7 @@ func main() {
 	for range os.Args[1:] {
 		fmt.Println(<-ch) // receive from channel ch
 	}
-	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+	fmt.Printf("%.2fs elapsed [%d]\n", time.Since(start).Seconds(), os.Getpid())
 }
 
 func fetch(url string, index int, ch chan<- string) {
@@ -30,7 +30,7 @@ func fetch(url string, index int, ch chan<- string) {
 		return
 	}
 
-	filename := fmt.Sprintf("fetchall.%d", index)
+	filename := fmt.Sprintf("fetchall.%d.%d", os.Getpid(), index)
 	f, err := os.OpenFile(filename, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 	if err != nil {
 		ch <- fmt.Sprintf("while opening %s: %v", filename, err)
