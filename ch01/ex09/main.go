@@ -4,7 +4,6 @@ package main
 
 import (
 	"crypto/tls"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,11 +11,8 @@ import (
 	"strings"
 )
 
-var verbose = flag.Bool("V", false, "verbose")
-
 func main() {
-	flag.Parse()
-	for _, url := range flag.Args() {
+	for _, url := range os.Args[1:] {
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "ex09: %v\n", err)
@@ -28,18 +24,17 @@ func main() {
 			fmt.Fprintf(os.Stderr, "ex09: reading %s: %v\n", url, err)
 			os.Exit(1)
 		}
-		if !*verbose {
-			fmt.Println(string(b))
-		}
-		fmt.Println("Status:", resp.Status)
-		if *verbose {
-			printResponseFields(resp)
-		}
+		fmt.Println(string(b))
+		printResponseFields(resp)
 	}
 }
 
 func printResponseFields(resp *http.Response) {
+	fmt.Println("Status:", resp.Status)
 	fmt.Println("Proto:", resp.Proto)
+	if len(resp.Header) == 0 {
+		fmt.Println("No headers")
+	}
 	for k, v := range resp.Header {
 		fmt.Printf("Header[%q]: %v\n", k, strings.Join(v, ", "))
 	}
@@ -47,6 +42,9 @@ func printResponseFields(resp *http.Response) {
 	fmt.Println("TransferEncoding:",
 		strings.Join(resp.TransferEncoding, ", "))
 	fmt.Println("Close:", resp.Close)
+	if len(resp.Trailer) == 0 {
+		fmt.Println("No trailers")
+	}
 	for k, v := range resp.Trailer {
 		fmt.Printf("Trailer[%q]: %v\n", k, strings.Join(v, ", "))
 	}
