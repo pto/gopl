@@ -31,7 +31,7 @@ func fetch(url string, index int, ch chan<- string) {
 	}
 
 	filename := fmt.Sprintf("fetchall.%d.%d", os.Getpid(), index)
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
+	f, err := os.Create(filename)
 	if err != nil {
 		ch <- fmt.Sprintf("while opening %s: %v", filename, err)
 		return
