@@ -33,19 +33,19 @@ func TestConcatJoin(t *testing.T) {
 }
 
 func BenchmarkConcatIndex(b *testing.B) {
-	for i := 1; i < b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		ConcatIndex(input)
 	}
 }
 
 func BenchmarkConcatRange(b *testing.B) {
-	for i := 1; i < b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		ConcatRange(input)
 	}
 }
 
 func BenchmarkConcatJoin(b *testing.B) {
-	for i := 1; i < b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		ConcatJoin(input)
 	}
 }
