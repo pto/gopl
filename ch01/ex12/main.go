@@ -83,8 +83,8 @@ func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
 		"size=%d, res=%f\n", freq, phaseStep, cycles, nframes, delay, size, res)
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
+	rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 	for i := 0; i < nframes; i++ {
-		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
 		upperLimit := cycles * 2 * math.Pi
 		for t := 0.0; t < upperLimit; t += res {
