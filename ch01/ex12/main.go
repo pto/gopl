@@ -23,7 +23,12 @@ const paletteSize = 255
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
+	fillPalette()
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe(":8000", nil))
+}
 
+func fillPalette() {
 	addToPalette := func(r, g, b int) {
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
@@ -37,44 +42,43 @@ func main() {
 	for i := 1; i < paletteSize; i += 3 {
 		addToPalette(i, 0, paletteSize-i) // Blue turning to Red
 	}
+}
 
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		if err := r.ParseForm(); err != nil {
-			log.Print(err)
-			return
-		}
-		freq, err := strconv.ParseFloat(r.Form.Get("freq"), 64)
-		if err != nil {
-			freq = rand.Float64() * 3.0 // relative frequency of y oscillator
-		}
-		phaseStep, err := strconv.ParseFloat(r.Form.Get("phaseStep"), 64)
-		if err != nil {
-			phaseStep = 0.01
-		}
-		cycles, err := strconv.ParseFloat(r.Form.Get("cycles"), 64)
-		if err != nil {
-			cycles = 5
-		}
-		nframes, err := strconv.Atoi(r.Form.Get("nframes"))
-		if err != nil {
-			nframes = 64
-		}
-		delay, err := strconv.Atoi(r.Form.Get("delay"))
-		if err != nil {
-			delay = 8
-		}
-		size, err := strconv.Atoi(r.Form.Get("size"))
-		if err != nil {
-			size = 100
-		}
-		res, err := strconv.ParseFloat(r.Form.Get("res"), 64)
-		if err != nil {
-			res = 0.001
-		}
-		lissajous(w, freq, phaseStep, cycles, nframes, delay, size, res)
+func handler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Print(err)
+		return
 	}
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	freq, err := strconv.ParseFloat(r.Form.Get("freq"), 64)
+	if err != nil {
+		freq = rand.Float64() * 3.0
+	}
+	phaseStep, err := strconv.ParseFloat(r.Form.Get("phaseStep"), 64)
+	if err != nil {
+		phaseStep = 0.01
+	}
+	cycles, err := strconv.ParseFloat(r.Form.Get("cycles"), 64)
+	if err != nil {
+		cycles = 5
+	}
+	nframes, err := strconv.Atoi(r.Form.Get("nframes"))
+	if err != nil {
+		nframes = 64
+	}
+	delay, err := strconv.Atoi(r.Form.Get("delay"))
+	if err != nil {
+		delay = 8
+	}
+	size, err := strconv.Atoi(r.Form.Get("size"))
+	if err != nil {
+		size = 100
+	}
+	res, err := strconv.ParseFloat(r.Form.Get("res"), 64)
+	if err != nil {
+		res = 0.001
+	}
+	lissajous(w, freq, phaseStep, cycles, nframes, delay, size, res)
 }
 
 func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
