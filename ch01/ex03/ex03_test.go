@@ -13,23 +13,16 @@ func init() {
 	}
 }
 
-func check(result string, t *testing.T) {
-	expectedOutput := strings.Join(input, " ")
-	if result != expectedOutput {
-		t.Fatalf("result %q does not match expected %q", result, expectedOutput)
+func TestConcat(t *testing.T) {
+	expected := strings.Join(input, " ")
+	check := func(result string) {
+		if result != expected {
+			t.Fatalf("result %q does not match expected %q", result, expected)
+		}
 	}
-}
-
-func TestConcatIndex(t *testing.T) {
-	check(ConcatIndex(input), t)
-}
-
-func TestConcatRange(t *testing.T) {
-	check(ConcatRange(input), t)
-}
-
-func TestConcatJoin(t *testing.T) {
-	check(ConcatJoin(input), t)
+	check(ConcatIndex(input))
+	check(ConcatRange(input))
+	check(ConcatJoin(input))
 }
 
 func BenchmarkConcatIndex(b *testing.B) {
