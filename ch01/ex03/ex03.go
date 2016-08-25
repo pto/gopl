@@ -4,6 +4,7 @@ package ex03
 
 import "strings"
 
+// ConcatIndex concatenates slice elements using a traditional for loop.
 func ConcatIndex(slice []string) string {
 	var s, sep string
 	for i := 0; i < len(slice); i++ {
@@ -13,6 +14,7 @@ func ConcatIndex(slice []string) string {
 	return s
 }
 
+// ConcatRange concatenates slice elements using a for range loop.
 func ConcatRange(slice []string) string {
 	var s, sep string
 	for _, elem := range slice {
@@ -22,6 +24,7 @@ func ConcatRange(slice []string) string {
 	return s
 }
 
+// ConcatJoin concatenates slice elements using strings.Join.
 func ConcatJoin(slice []string) string {
 	return strings.Join(slice, " ")
 }
