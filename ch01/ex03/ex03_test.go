@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var input = make([]string, 0, '~'-'!'+1)
+var input []string
 
 func init() {
 	for i := '!'; i <= '~'; i++ {
