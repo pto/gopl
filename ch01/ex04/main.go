@@ -1,5 +1,5 @@
-// Ex04 prints the count, text and filename of lines that appear more than once
-// in the input.  It reads from Stdin or from a list of named files.
+// Ex04 prints the count, text and filename(s) of lines that appear more than
+// once in the input.  It reads from Stdin or from a list of named files.
 package main
 
 import (
