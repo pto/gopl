@@ -8,15 +8,17 @@ import (
 	"os"
 )
 
+// countMap maps the text of a line to a map that maps a filename to the
+// number of occurrences of the text in that file.
 type countMap map[string](map[string]int)
 
 func main() {
 	counts := make(countMap) // counts[line][filename]
-	processFiles(counts)
-	printResults(counts)
+	readInput(counts)
+	outputResults(counts)
 }
 
-func processFiles(counts countMap) {
+func readInput(counts countMap) {
 	filenames := os.Args[1:]
 	if len(filenames) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
@@ -24,7 +26,7 @@ func processFiles(counts countMap) {
 		for _, filename := range filenames {
 			file, err := os.Open(filename)
 			if err != nil {
-				fmt.Fprintln(os.Stderr, "dup2:", err)
+				fmt.Fprintln(os.Stderr, "ex04:", err)
 				continue
 			}
 			countLines(file, filename, counts)
@@ -42,14 +44,14 @@ func countLines(file *os.File, filename string, counts countMap) {
 		}
 		counts[line][filename]++
 	}
-	// NOTE: ignoring potential errors from input.Err()
+	// NOTE: ignoring potential errors from scanner.Err()
 }
 
-func printResults(counts countMap) {
-	for line, files := range counts {
+func outputResults(counts countMap) {
+	for line, filemap := range counts {
 		linecount := 0
 		filenames, sep := "", ""
-		for filename, filecount := range files {
+		for filename, filecount := range filemap {
 			linecount += filecount
 			filenames += sep + filename
 			sep = ", "
