@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -25,6 +26,7 @@ func main() {
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
 
+	// 255/3 is exactly 85, so each loop adds 85 entries
 	for i := 1; i < paletteSize; i += 3 {
 		addToPalette(paletteSize-i, i, 0) // Red turning to Green
 	}
@@ -40,7 +42,7 @@ func main() {
 			lissajous(w)
 		}
 		http.HandleFunc("/", handler)
-		log.Fatal(http.ListenAndServe(":8000", nil))
+		log.Fatal(http.ListenAndServe("localhost:8000", nil))
 		return
 	}
 
@@ -64,9 +66,10 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			// Range from 1 to paletteSize (use full palette exactly once)
+			// Range from 1 to paletteSize-1 (use full palette exactly once)
+			paletteIndex := uint8(t*(paletteSize-1)/(cycles*2*math.Pi)) + 1
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				uint8(t*(paletteSize-1)/(cycles*2*math.Pi))+1)
+				paletteIndex)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
