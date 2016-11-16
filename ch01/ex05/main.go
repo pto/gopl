@@ -29,7 +29,7 @@ func main() {
 			lissajous(w)
 		}
 		http.HandleFunc("/", handler)
-		log.Fatal(http.ListenAndServe(":8000", nil))
+		log.Fatal(http.ListenAndServe("localhost:8000", nil))
 		return
 	}
 
