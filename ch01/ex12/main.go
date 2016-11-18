@@ -1,5 +1,5 @@
 // Ex12 serves GIF animations of random Lissajous curves in multiple colors,
-// accepting query parameters for frequency, phase step and cycles, number of
+// accepting query parameters for frequency, phase step, cycles, number of
 // frames, delay between frames, image size and angular resolution.
 package main
 
@@ -25,7 +25,7 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	fillPalette()
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
 func fillPalette() {
@@ -94,10 +94,9 @@ func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
 		for t := 0.0; t < upperLimit; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			// Range from 1 to MaxUint8
 			img.SetColorIndex(size+int(x*float64(size)+0.5),
 				size+int(y*float64(size)+0.5),
-				uint8(t*(math.MaxUint8-1)/upperLimit)+1)
+				uint8(t*(paletteSize-1)/upperLimit)+1)
 		}
 		phase += phaseStep
 		anim.Delay = append(anim.Delay, delay)
