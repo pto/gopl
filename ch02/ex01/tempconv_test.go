@@ -3,44 +3,31 @@ package tempconv
 import "testing"
 
 func TestConversions(t *testing.T) {
-	if FToC(CToF(AbsoluteZeroC)) != AbsoluteZeroC {
-		t.Error("C/F/C Conversion failed on absolute zero")
+	testCFC := func(c Celsius) {
+		if FToC(CToF(c)) != c {
+			t.Error("C/F/C conversion failed on", c)
+		}
 	}
-	if FToC(CToF(FreezingC)) != FreezingC {
-		t.Error("C/F/C Conversion failed on freezing point")
+	testCKFC := func(c Celsius) {
+		if FToC(KToF(CToK(c))) != c {
+			t.Error("C/K/F/C conversion failed on", c)
+		}
 	}
-	if FToC(CToF(BoilingC)) != BoilingC {
-		t.Error("C/F/C Conversion failed on boiling point")
+	testCFKC := func(c Celsius) {
+		if KToC(FToK(CToF(c))) != c {
+			t.Error("C/F/K/C conversion failed on", c)
+		}
 	}
-
-	if FToC(KToF(CToK(AbsoluteZeroC))) != AbsoluteZeroC {
-		t.Error("C/K/F/C Conversion failed on absolute zero")
-	}
-	if FToC(KToF(CToK(FreezingC))) != FreezingC {
-		t.Error("C/K/F/C Conversion failed on freezing point")
-	}
-	if FToC(KToF(CToK(BoilingC))) != BoilingC {
-		t.Error("C/K/F/C Conversion failed on boiling point")
-	}
-
-	if KToC(FToK(CToF(AbsoluteZeroC))) != AbsoluteZeroC {
-		t.Error("C/F/K/C Conversion failed on absolute zero")
-	}
-	if KToC(FToK(CToF(FreezingC))) != FreezingC {
-		t.Error("C/F/K/C Conversion failed on freezing point")
-	}
-	if KToC(FToK(CToF(BoilingC))) != BoilingC {
-		t.Error("C/F/K/C Conversion failed on boiling point")
+	testCKC := func(c Celsius) {
+		if KToC(CToK(c)) != c {
+			t.Error("C/K/C conversion failed on", c)
+		}
 	}
 
-	if KToC(CToK(AbsoluteZeroC)) != AbsoluteZeroC {
-		t.Error("C/K/C Conversion failed on absolute zero")
-	}
-	if KToC(CToK(FreezingC)) != FreezingC {
-		t.Error("C/K/C Conversion failed on freezing point")
-	}
-	if KToC(CToK(FreezingC)) != FreezingC {
-		t.Error("C/K/C Conversion failed on freezing point")
+	for _, f := range []func(c Celsius){testCFC, testCKFC, testCFKC, testCKC} {
+		f(AbsoluteZeroC)
+		f(FreezingC)
+		f(BoilingC)
 	}
 
 	if FToC(32) != 0 {
