@@ -32,7 +32,7 @@ func display(val string) {
 	x, err := strconv.ParseFloat(val, 64)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ex02: %v\n", err)
-		os.Exit(1)
+		return
 	}
 	f := conv.Fahrenheit(x)
 	c := conv.Celsius(x)
@@ -49,4 +49,8 @@ func display(val string) {
 	a := conv.Acres(x)
 	h := conv.Hectares(x)
 	fmt.Printf("%s = %s, %s = %s\n", a, conv.AToH(a), h, conv.HToA(h))
+
+	g := conv.Gallons(x)
+	l := conv.Liters(x)
+	fmt.Printf("%s = %s, %s = %s\n", g, conv.GToL(g), l, conv.LToG(l))
 }
