@@ -36,7 +36,7 @@ func main() {
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy)
 			} else {
-				fmt.Fprintf(os.Stderr, "i: %d, j: %d, "+
+				fmt.Fprintf(os.Stderr, "ex01: NaN at i: %d, j: %d, "+
 					"a: (%g, %g), b: (%g, %g), c: (%g, %g), d: (%g, %g)\n",
 					i, j, ax, ay, bx, by, cx, cy, dx, dy)
 			}
