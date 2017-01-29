@@ -4,36 +4,18 @@ import "testing"
 
 const testWord uint64 = 0x1234567890abcdef
 
-func TestPopCountLoop1(t *testing.T) {
-	result := PopCountLoop1(testWord)
+func TestPopCounts(t *testing.T) {
 	expected := PopCount(testWord)
-	if result != expected {
-		t.Fatalf("%d does not match expected result %d", result, expected)
+	check := func(f string, result int) {
+		if result != expected {
+			t.Fatalf("%s: %d does not match expected result %d", f, result, expected)
+		}
 	}
-}
 
-func TestPopCountLoop2(t *testing.T) {
-	result := PopCountLoop2(testWord)
-	expected := PopCount(testWord)
-	if result != expected {
-		t.Fatalf("%d does not match expected result %d", result, expected)
-	}
-}
-
-func TestPopCountShift(t *testing.T) {
-	result := PopCountShift(testWord)
-	expected := PopCount(testWord)
-	if result != expected {
-		t.Fatalf("%d does not match expected result %d", result, expected)
-	}
-}
-
-func TestPopCountMask(t *testing.T) {
-	result := PopCountMask(testWord)
-	expected := PopCount(testWord)
-	if result != expected {
-		t.Fatalf("%d does not match expected result %d", result, expected)
-	}
+	check("PopCountLoop1", PopCountLoop1(testWord))
+	check("PopCountLoop2", PopCountLoop2(testWord))
+	check("PopCountShift", PopCountShift(testWord))
+	check("PopCountMask", PopCountMask(testWord))
 }
 
 func BenchmarkPopCount(b *testing.B) {
