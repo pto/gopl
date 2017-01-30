@@ -1,23 +1,43 @@
 // Ex02 outputs an SVG rendering of a 3-D surface function, ignoring NaN,
-// coloring peaks red and valleys blue, and automatically adjusting the z-scale.
+// coloring peaks red and valleys blue, and adjusting the z-scale to fit.
 package main
 
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 const (
 	width, height = 600, 320            // canvas size in pixels
 	cells         = 100                 // number of grid cells
 	xyRange       = 30.0                // axis range (max-min)
-	xyScale       = width / 2 / xyRange // pixels per x or y unit
+	xyScale       = width / 2 / xyRange // x and y scaling
 	angle         = math.Pi / 6         // angle of x, y axes (=30°)
 )
 
-var zMin, zMax, zScale float64 = zLimits() // z-axis limits
+var zMin, zMax, zScale float64 // z-axis limits
 
-var f = eggBox // Function to graph
+var f func(float64, float64) float64 // Function to graph
+
+func init() {
+	f = original
+	if len(os.Args) > 1 {
+		switch os.Args[1] {
+		case "eggbox":
+			f = eggbox
+		case "moguls":
+			f = moguls
+		case "saddle":
+			f = saddle
+		default:
+			fmt.Fprintln(os.Stderr, "usage: ex02 eggbox|moguls|saddle")
+			os.Exit(1)
+		}
+	}
+
+	zMin, zMax, zScale = zLimits()
+}
 
 func main() {
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
@@ -100,10 +120,12 @@ func cellToXY(i, j int) (x, y float64) {
 	return x, y
 }
 
+var cosine, sine = math.Cos(angle), math.Sin(angle)
+
 // Project (x, y, z) isometrically onto 2-D SVG canvas (sx, sy).
 func project(x, y, z float64) (sx, sy float64) {
-	sx = width/2 + (x-y)*math.Cos(angle)*xyScale
-	sy = height/2 + (x+y)*math.Sin(angle)*xyScale - z*zScale
+	sx = width/2 + (x-y)*cosine*xyScale
+	sy = height/2 + (x+y)*sine*xyScale - z*zScale
 	return sx, sy
 }
 
@@ -133,7 +155,7 @@ func original(x, y float64) (z float64) {
 	return math.Sin(r) / r
 }
 
-func eggBox(x, y float64) (z float64) {
+func eggbox(x, y float64) (z float64) {
 	const top, bottom = 1.5, 0
 	z = math.Sin(x) + math.Cos(y)
 	// Outer border
