@@ -15,6 +15,7 @@ func main() {
 	timeFunc("Index:", ConcatIndex, input)
 	timeFunc("Range:", ConcatRange, input)
 	timeFunc("Join:", ConcatJoin, input)
+	timeFunc("NoOp:", NoOp, input)
 }
 
 // timeFunc runs function f on slice s and prints the duration.
@@ -47,4 +48,9 @@ func ConcatRange(slice []string) string {
 // ConcatJoin concatenates slice elements using strings.Join.
 func ConcatJoin(slice []string) string {
 	return strings.Join(slice, " ")
+}
+
+// NoOp does no concatenation to test the overhead of the timing function.
+func NoOp(_ []string) string {
+	return ""
 }
