@@ -30,3 +30,9 @@ func BenchmarkConcatJoin(b *testing.B) {
 		ConcatJoin(input)
 	}
 }
+
+func BenchmarkNoOp(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NoOp(input)
+	}
+}
