@@ -3,25 +3,22 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
 )
 
 func main() {
-	var input []string
-	for i := '!'; i <= '~'; i++ {
-		input = append(input, strings.Repeat(string(i), 20))
-	}
-	timeFunc("Index:", ConcatIndex, input)
-	timeFunc("Range:", ConcatRange, input)
-	timeFunc("Join:", ConcatJoin, input)
-	timeFunc("NoOp:", NoOp, input)
+	timeFunc("Index:", ConcatIndex)
+	timeFunc("Range:", ConcatRange)
+	timeFunc("Join:", ConcatJoin)
+	timeFunc("NoOp:", NoOp)
 }
 
-// timeFunc runs function f on slice s and prints the duration.
-func timeFunc(heading string, f func([]string) string, s []string) {
+// timeFunc runs function f on os.Args and prints the duration.
+func timeFunc(heading string, f func([]string) string) {
 	start := time.Now()
-	f(s)
+	f(os.Args[1:])
 	fmt.Println(heading, time.Now().Sub(start))
 }
 
