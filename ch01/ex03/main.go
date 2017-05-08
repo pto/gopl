@@ -11,8 +11,8 @@ import (
 func main() {
 	timeFunc("Index:", ConcatIndex)
 	timeFunc("Range:", ConcatRange)
-	timeFunc("Join:", ConcatJoin)
-	timeFunc("NoOp:", NoOp)
+	timeFunc("Join: ", ConcatJoin)
+	timeFunc("NoOp: ", NoOp)
 }
 
 // timeFunc runs function f on os.Args and prints the duration.
