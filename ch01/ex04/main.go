@@ -9,42 +9,22 @@ import (
 )
 
 func main() {
-	counts := make(map[string](map[string]int)) // counts[line][filename]
-	readInput(counts)
-	outputResults(counts)
-}
-
-func readInput(counts map[string](map[string]int)) {
-	filenames := os.Args[1:]
-	if len(filenames) == 0 {
-		countLines(os.Stdin, "Stdin", counts)
+	counts := make(map[string]map[string]int)
+	files := os.Args[1:]
+	if len(files) == 0 {
+		countLines(os.Stdin, counts, "Stdin")
 	} else {
-		for _, filename := range filenames {
-			file, err := os.Open(filename)
+		for _, arg := range files {
+			f, err := os.Open(arg)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "ex04: %v\n", err)
 				continue
 			}
-			countLines(file, filename, counts)
-			file.Close()
+			countLines(f, counts, arg)
+			f.Close()
 		}
 	}
-}
 
-func countLines(file *os.File, filename string,
-	counts map[string](map[string]int)) {
-	input := bufio.NewScanner(file)
-	for input.Scan() {
-		line := input.Text()
-		if counts[line] == nil {
-			counts[line] = make(map[string]int)
-		}
-		counts[line][filename]++
-	}
-	// NOTE: ignoring potential errors from scanner.Err()
-}
-
-func outputResults(counts map[string](map[string]int)) {
 	for line, filemap := range counts {
 		linecount := 0
 		filenames, sep := "", ""
@@ -57,4 +37,16 @@ func outputResults(counts map[string](map[string]int)) {
 			fmt.Printf("%d\t%s (%s)\n", linecount, line, filenames)
 		}
 	}
+}
+
+func countLines(f *os.File, counts map[string]map[string]int, name string) {
+	input := bufio.NewScanner(f)
+	for input.Scan() {
+		line := input.Text()
+		if counts[line] == nil {
+			counts[line] = make(map[string]int)
+		}
+		counts[line][name]++
+	}
+	// NOTE: ignoring potential errors from scanner.Err()
 }
