@@ -8,17 +8,13 @@ import (
 	"os"
 )
 
-// countMap maps the text of a line to a map that maps a filename to the
-// number of occurrences of the text in that file.
-type countMap map[string](map[string]int)
-
 func main() {
-	counts := make(countMap) // counts[line][filename]
+	counts := make(map[string](map[string]int)) // counts[line][filename]
 	readInput(counts)
 	outputResults(counts)
 }
 
-func readInput(counts countMap) {
+func readInput(counts map[string](map[string]int)) {
 	filenames := os.Args[1:]
 	if len(filenames) == 0 {
 		countLines(os.Stdin, "Stdin", counts)
@@ -26,7 +22,7 @@ func readInput(counts countMap) {
 		for _, filename := range filenames {
 			file, err := os.Open(filename)
 			if err != nil {
-				fmt.Fprintln(os.Stderr, "ex04:", err)
+				fmt.Fprintf(os.Stderr, "ex04: %v\n", err)
 				continue
 			}
 			countLines(file, filename, counts)
@@ -35,10 +31,11 @@ func readInput(counts countMap) {
 	}
 }
 
-func countLines(file *os.File, filename string, counts countMap) {
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
+func countLines(file *os.File, filename string,
+	counts map[string](map[string]int)) {
+	input := bufio.NewScanner(file)
+	for input.Scan() {
+		line := input.Text()
 		if counts[line] == nil {
 			counts[line] = make(map[string]int)
 		}
@@ -47,7 +44,7 @@ func countLines(file *os.File, filename string, counts countMap) {
 	// NOTE: ignoring potential errors from scanner.Err()
 }
 
-func outputResults(counts countMap) {
+func outputResults(counts map[string](map[string]int)) {
 	for line, filemap := range counts {
 		linecount := 0
 		filenames, sep := "", ""
