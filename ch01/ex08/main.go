@@ -1,5 +1,5 @@
 // Ex08 outputs the content found at a URL, and adds "http://" if there is no
-// http or https protocol.
+// http protocol.
 package main
 
 import (
@@ -12,8 +12,9 @@ import (
 
 func main() {
 	for _, url := range os.Args[1:] {
-		if !strings.HasPrefix(url, "http://") &&
-			!strings.HasPrefix(url, "https://") {
+		if strings.HasPrefix(url, "http://") {
+			// do nothing; the ! operator hasn't been introduced yet
+		} else {
 			url = "http://" + url
 		}
 		resp, err := http.Get(url)
