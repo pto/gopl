@@ -8,7 +8,8 @@ func TestPopCounts(t *testing.T) {
 	expected := PopCount(testWord)
 	check := func(f string, result int) {
 		if result != expected {
-			t.Fatalf("%s: %d does not match expected result %d", f, result, expected)
+			t.Fatalf("%s: %d does not match expected result %d",
+				f, result, expected)
 		}
 	}
 
