@@ -1,4 +1,5 @@
-// Ex02 computes an SVG rendering of 3-D surface functions.
+// Ex03 computes an SVG rendering of a 3-D surface function, coloring
+// peaks red and valleys blue.
 package main
 
 import (
@@ -17,23 +18,43 @@ const (
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
-var f = saddle
-
 func main() {
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
+	zmax, zmin := limits()
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			ax, ay := corner(i+1, j)
 			bx, by := corner(i, j)
 			cx, cy := corner(i, j+1)
 			dx, dy := corner(i+1, j+1)
-			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
-				ax, ay, bx, by, cx, cy, dx, dy)
+			r, g, b := color(i, j, zmax, zmin)
+			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' "+
+				"style='stroke:rgb(%d,%d,%d)'/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy, r, g, b)
 		}
 	}
 	fmt.Println("</svg>")
+}
+
+func limits() (zmax, zmin float64) {
+	zmax = -math.MaxFloat64
+	zmin = math.MaxFloat64
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			x := xyrange * (float64(i)/cells - 0.5)
+			y := xyrange * (float64(j)/cells - 0.5)
+			z := f(x, y)
+			if z > zmax {
+				zmax = z
+			}
+			if z < zmin {
+				zmin = z
+			}
+		}
+	}
+	return zmax, zmin
 }
 
 func corner(i, j int) (float64, float64) {
@@ -50,14 +71,34 @@ func corner(i, j int) (float64, float64) {
 	return sx, sy
 }
 
-func eggbox(x, y float64) float64 {
-	return (math.Sin(x) + math.Cos(y)) / 4
+func color(i, j int, zmax, zmin float64) (r, g, b int) {
+	// Find point (x,y) at corner of cell (i,j).
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	// Compute surface height z.
+	z := f(x, y)
+
+	zrange := zmax - zmin
+	r = int(255 * (z - zmin) / zrange)
+	g = 0
+	b = int(255 * (zmax - z) / zrange)
+	if r < 0 {
+		r = 0
+	}
+	if r > 255 {
+		r = 255
+	}
+	if b < 0 {
+		b = 0
+	}
+	if b > 255 {
+		b = 255
+	}
+	return r, g, b
 }
 
-func moguls(x, y float64) (z float64) {
-	return (math.Sin(y) - y/2) / 8
-}
-
-func saddle(x, y float64) (z float64) {
-	return (x*x - y*y) / 500
+func f(x, y float64) float64 {
+	r := math.Hypot(x, y) // distance from (0,0)
+	return math.Sin(r) / r
 }
