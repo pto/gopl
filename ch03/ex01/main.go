@@ -5,15 +5,14 @@ package main
 import (
 	"fmt"
 	"math"
-	"os"
 )
 
 const (
 	width, height = 600, 320            // canvas size in pixels
 	cells         = 100                 // number of grid cells
-	xyrange       = 30.0                // axis ranges (-xyrange/2..+xyrange/2)
-	xyscale       = width / 2 / xyrange // x and y unit scaling
-	zscale        = height * 0.4        // z unit scaling
+	xyrange       = 30.0                // axis ranges (-xyrange..+xyrange)
+	xyscale       = width / 2 / xyrange // pixels per x or y unit
+	zscale        = height * 0.4        // pixels per z unit
 	angle         = math.Pi / 6         // angle of x, y axes (=30°)
 )
 
@@ -35,10 +34,6 @@ func main() {
 				math.IsNaN(dx) || math.IsNaN(dy)) {
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy)
-			} else {
-				fmt.Fprintf(os.Stderr, "ex01: NaN at i: %d, j: %d, "+
-					"a: (%g, %g), b: (%g, %g), c: (%g, %g), d: (%g, %g)\n",
-					i, j, ax, ay, bx, by, cx, cy, dx, dy)
 			}
 		}
 	}
