@@ -12,7 +12,7 @@ import (
 func main() {
 	const (
 		x, y                   = 0.0, 1.0
-		zoom                   = 2.0
+		zoom                   = 1e14 // point at which artifacts appear
 		radius                 = 2.0 / zoom
 		xmin, ymin, xmax, ymax = x - radius, y - radius, x + radius, y + radius
 		width, height          = 1024, 1024

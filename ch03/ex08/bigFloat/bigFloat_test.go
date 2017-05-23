@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"math"
 	"math/big"
 	"math/cmplx"
@@ -82,9 +83,36 @@ func TestSqrt(t *testing.T) {
 	}
 }
 
+func TestMandelbrot(t *testing.T) {
+	for _, x := range cases {
+		xr := big.NewFloat(real(x)).SetPrec(64)
+		xi := big.NewFloat(imag(x)).SetPrec(64)
+		m := mandelbrot(xr, xi)
+		c128_m := c128_mandelbrot(x)
+		if m != c128_m {
+			t.Errorf("mandelbrot(%v, %v) is %v, should be %v",
+				xr, xi, m, c128_m)
+		}
+	}
+}
+
 func close(a, b float64) bool {
 	if b == 0 {
 		return a == 0
 	}
 	return math.Abs(a-b)/b < 1e-15
+}
+
+func c128_mandelbrot(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := 0; n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.Gray{255 - uint8(contrast*n)}
+		}
+	}
+	return color.Black
 }
