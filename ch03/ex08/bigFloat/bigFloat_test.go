@@ -31,10 +31,10 @@ var cases = []complex128{
 func TestAddMult(t *testing.T) {
 	for _, x := range cases {
 		for _, y := range cases {
-			xr := big.NewFloat(real(x)).SetPrec(64)
-			xi := big.NewFloat(imag(x)).SetPrec(64)
-			yr := big.NewFloat(real(y)).SetPrec(64)
-			yi := big.NewFloat(imag(y)).SetPrec(64)
+			xr := big.NewFloat(real(x)).SetPrec(prec)
+			xi := big.NewFloat(imag(x)).SetPrec(prec)
+			yr := big.NewFloat(real(y)).SetPrec(prec)
+			yi := big.NewFloat(imag(y)).SetPrec(prec)
 			zr, zi := cadd(xr, xi, yr, yi)
 			fr, _ := zr.Float64()
 			fi, _ := zi.Float64()
@@ -57,8 +57,8 @@ func TestAddMult(t *testing.T) {
 
 func TestAbs(t *testing.T) {
 	for _, x := range cases {
-		xr := big.NewFloat(real(x)).SetPrec(64)
-		xi := big.NewFloat(imag(x)).SetPrec(64)
+		xr := big.NewFloat(real(x)).SetPrec(prec)
+		xi := big.NewFloat(imag(x)).SetPrec(prec)
 		abs := cabs(xr, xi)
 		fabs, _ := abs.Float64()
 		if !close(fabs, cmplx.Abs(x)) {
@@ -74,7 +74,7 @@ func TestSqrt(t *testing.T) {
 		if x < 0 {
 			continue
 		}
-		xr := big.NewFloat(x).SetPrec(64)
+		xr := big.NewFloat(x).SetPrec(prec)
 		root := bfsqrt(xr)
 		froot, _ := root.Float64()
 		if !close(froot, math.Sqrt(x)) {
@@ -85,8 +85,8 @@ func TestSqrt(t *testing.T) {
 
 func TestMandelbrot(t *testing.T) {
 	for _, x := range cases {
-		xr := big.NewFloat(real(x)).SetPrec(64)
-		xi := big.NewFloat(imag(x)).SetPrec(64)
+		xr := big.NewFloat(real(x)).SetPrec(prec)
+		xi := big.NewFloat(imag(x)).SetPrec(prec)
 		m := mandelbrot(xr, xi)
 		c128_m := c128_mandelbrot(x)
 		if m != c128_m {

@@ -9,12 +9,12 @@ import (
 	"os"
 )
 
-const prec = 256
+const prec = 128
 
 func main() {
 	const (
 		x, y                   = 0.0, 1.0
-		zoom                   = 1e14
+		zoom                   = 1e28
 		radius                 = 2.0 / zoom
 		xmin, ymin, xmax, ymax = x - radius, y - radius, x + radius, y + radius
 		width, height          = 1024, 1024
@@ -26,16 +26,16 @@ func main() {
 		h := big.NewFloat(height).SetPrec(prec)
 		r := big.NewFloat(ymax - ymin).SetPrec(prec)
 		m := big.NewFloat(ymin).SetPrec(prec)
-		y.Mul(y, h)
-		y.Quo(y, r)
+		y.Quo(y, h)
+		y.Mul(y, r)
 		y.Add(y, m)
 		for px := 0; px < width; px++ {
 			x := big.NewFloat(float64(px)).SetPrec(prec)
 			w := big.NewFloat(width).SetPrec(prec)
 			r := big.NewFloat(xmax - xmin)
 			m := big.NewFloat(xmin)
-			x.Mul(x, w)
-			x.Quo(x, r)
+			x.Quo(x, w)
+			x.Mul(x, r)
 			x.Add(x, m)
 			// Image point (px, py) represents complex value z.
 			img.Set(px, py, mandelbrot(x, y))
@@ -122,5 +122,5 @@ func goodEnough(x, guess *big.Float) bool {
 	t1.Sub(t1, x)
 	t1.Quo(t1, x)
 	delta, _ := t1.Abs(t1).Float64()
-	return delta < 1e-15
+	return delta < epsilon
 }
