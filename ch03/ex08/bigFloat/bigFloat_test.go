@@ -59,26 +59,11 @@ func TestAbs(t *testing.T) {
 	for _, x := range cases {
 		xr := big.NewFloat(real(x)).SetPrec(prec)
 		xi := big.NewFloat(imag(x)).SetPrec(prec)
-		abs := cabs(xr, xi)
+		abs := cabsSquared(xr, xi)
 		fabs, _ := abs.Float64()
-		if !close(fabs, cmplx.Abs(x)) {
+		if !close(fabs, cmplx.Abs(x)*cmplx.Abs(x)) {
 			t.Errorf("cabs(%v, %v) is %g, should be %g",
 				xr, xi, fabs, cmplx.Abs(x))
-		}
-	}
-}
-
-func TestSqrt(t *testing.T) {
-	for _, x := range cases {
-		x := real(x)
-		if x < 0 {
-			continue
-		}
-		xr := big.NewFloat(x).SetPrec(prec)
-		root := bfsqrt(xr)
-		froot, _ := root.Float64()
-		if !close(froot, math.Sqrt(x)) {
-			t.Errorf("bfsqrt(%v) is %g, should be %g", xr, froot, math.Sqrt(x))
 		}
 	}
 }

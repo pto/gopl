@@ -9,12 +9,12 @@ import (
 	"os"
 )
 
-const prec = 128
+const prec = 64
 
 func main() {
 	const (
 		x, y                   = 0.0, 1.0
-		zoom                   = 1e28
+		zoom                   = 1e18
 		radius                 = 2.0 / zoom
 		xmin, ymin, xmax, ymax = x - radius, y - radius, x + radius, y + radius
 		width, height          = 1024, 1024
@@ -44,7 +44,7 @@ func main() {
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
 
-var two = big.NewFloat(2).SetPrec(prec)
+var four = big.NewFloat(4).SetPrec(prec)
 
 func mandelbrot(zr, zi *big.Float) color.Color {
 	const iterations = 200
@@ -55,8 +55,8 @@ func mandelbrot(zr, zi *big.Float) color.Color {
 	for n := 0; n < iterations; n++ {
 		vr, vi = cmult(vr, vi, vr, vi)
 		vr, vi = cadd(vr, vi, zr, zi)
-		abs = cabs(vr, vi)
-		abs.Sub(abs, two)
+		abs = cabsSquared(vr, vi)
+		abs.Sub(abs, four)
 		if abs.Sign() > 0 {
 			return color.Gray{255 - uint8(contrast*n)}
 		}
@@ -86,41 +86,10 @@ func cmult(xr, xi, yr, yi *big.Float) (*big.Float, *big.Float) {
 	return zr, zi
 }
 
-func cabs(xr, xi *big.Float) *big.Float {
+func cabsSquared(xr, xi *big.Float) *big.Float {
 	t1 := big.NewFloat(0).SetPrec(prec)
 	t2 := big.NewFloat(0).SetPrec(prec)
 	t1.Mul(xr, xr)
 	t2.Mul(xi, xi)
-	t1.Add(t1, t2)
-	return bfsqrt(t1)
-}
-
-func bfsqrt(x *big.Float) *big.Float {
-	if x.Sign() < 0 {
-		panic("bfsqrt cannot handle negative numbers")
-	}
-	if x.Sign() == 0 {
-		return big.NewFloat(0).SetPrec(prec)
-	}
-	t1 := big.NewFloat(0).SetPrec(prec)
-	half := big.NewFloat(0.5).SetPrec(prec)
-	guess := big.NewFloat(1).SetPrec(prec)
-	for {
-		t1.Quo(x, guess)
-		t1.Add(guess, t1)
-		guess.Mul(half, t1)
-		if goodEnough(x, guess) {
-			break
-		}
-	}
-	return guess
-}
-
-func goodEnough(x, guess *big.Float) bool {
-	t1 := big.NewFloat(0).SetPrec(prec)
-	t1.Mul(guess, guess)
-	t1.Sub(t1, x)
-	t1.Quo(t1, x)
-	delta, _ := t1.Abs(t1).Float64()
-	return delta < epsilon
+	return t1.Add(t1, t2)
 }
