@@ -17,7 +17,7 @@ var cases = []complex128{
 	complex(-1, 0),
 	complex(-1, -1),
 	complex(0, 0.5),
-	/*complex(0.5, 0),
+	complex(0.5, 0),
 	complex(0.12345, -0.12345),
 	complex(0.444444, 0.555555),
 	complex(1.23456, 2.34566),
@@ -25,7 +25,7 @@ var cases = []complex128{
 	complex(313241.23, 534213.24),
 	complex(1231231, 0),
 	complex(1e15, 2e15),
-	complex(1e-15, 2e-15),*/
+	complex(1e-15, 2e-15),
 }
 
 func TestAddMult(t *testing.T) {

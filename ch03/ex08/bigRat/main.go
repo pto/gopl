@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -12,11 +13,11 @@ import (
 func main() {
 	const (
 		cx, cy        = 0.0, 1.0
-		zoom          = 1e14
+		zoom          = 10
 		radius        = 2.0 / zoom
 		xmin, ymin    = cx - radius, cy - radius
 		xmax, ymax    = cx + radius, cy + radius
-		width, height = 1024, 1024
+		width, height = 128, 128
 	)
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
@@ -27,16 +28,17 @@ func main() {
 	x := big.NewRat(1, 1)
 	w := big.NewRat(1, 1)
 	for py := 0; py < height; py++ {
-		y.SetFloat64(float64(py))
-		h.SetFloat64(height)
+		y.SetInt64(int64(py))
+		h.SetInt64(height)
 		r.SetFloat64(ymax - ymin)
 		m.SetFloat64(ymin)
 		y.Quo(y, h)
 		y.Mul(y, r)
 		y.Add(y, m)
 		for px := 0; px < width; px++ {
-			x.SetFloat64(float64(px))
-			w.SetFloat64(width)
+			fmt.Fprintln(os.Stderr, "Pixel", px, py)
+			x.SetInt64(int64(px))
+			w.SetInt64(width)
 			r.SetFloat64(xmax - xmin)
 			m.SetFloat64(xmin)
 			x.Quo(x, w)
@@ -52,7 +54,7 @@ func main() {
 var four = big.NewRat(4, 1)
 
 func mandelbrot(zr, zi *big.Rat) color.Color {
-	const iterations = 200
+	const iterations = 10
 	const contrast = 15
 	vr := big.NewRat(0, 1)
 	vi := big.NewRat(0, 1)
