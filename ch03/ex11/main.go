@@ -1,4 +1,4 @@
-// Comma prints its integer or floating point signed argument numbers with a
+// Ex11 prints its integer or floating point signed argument numbers with a
 // comma at each power of 1000.
 package main
 
