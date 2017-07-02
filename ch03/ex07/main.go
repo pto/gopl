@@ -12,7 +12,7 @@ import (
 func main() {
 	const (
 		xmin, ymin, xmax, ymax = -2, -2, +2, +2
-		width, height          = 1024, 1024
+		width, height          = 4096, 4096
 	)
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
@@ -45,9 +45,31 @@ func newton(z complex128) color.Color {
 	for n := uint8(0); n < limit; n++ {
 		x1 := x0 - x0/4 + 1/(4*x0*x0*x0)
 		if cmplx.Abs(x1*x1*x1*x1-1) < epsilon {
-			return color.YCbCr{128, 255 - contrast*n, contrast*n - 255}
+			r, g, b := rootColor(x1)
+			var brightness uint8
+			if contrast*n < 0xFF {
+				brightness = 0xFF - contrast*n
+			}
+			return color.RGBA{r * brightness, g * brightness, b * brightness,
+				0xFF}
 		}
 		x0 = x1
 	}
 	return color.Black
+}
+
+func rootColor(z complex128) (r, g, b uint8) {
+	if real(z) > 0 {
+		if imag(z) > 0 {
+			return 1, 0, 0
+		} else {
+			return 0, 1, 0
+		}
+	} else {
+		if imag(z) > 0 {
+			return 0, 0, 1
+		} else {
+			return 0, 1, 1
+		}
+	}
 }
