@@ -1,6 +1,9 @@
 package ex03
 
-import "testing"
+import (
+	"math/bits"
+	"testing"
+)
 
 const testWord uint64 = 0x1234567890abcdef
 
@@ -17,6 +20,7 @@ func TestPopCounts(t *testing.T) {
 	check("PopCountLoop2", PopCountLoop2(testWord))
 	check("PopCountShift", PopCountShift(testWord))
 	check("PopCountMask", PopCountMask(testWord))
+	check("OnesCount", bits.OnesCount64(testWord))
 }
 
 func BenchmarkPopCount(b *testing.B) {
@@ -46,5 +50,11 @@ func BenchmarkPopCountShift(b *testing.B) {
 func BenchmarkPopCountMask(b *testing.B) {
 	for i := 1; i < b.N; i++ {
 		PopCountMask(testWord)
+	}
+}
+
+func BenchmarkOnesCount(b *testing.B) {
+	for i := 1; i < b.N; i++ {
+		bits.OnesCount64(testWord)
 	}
 }
