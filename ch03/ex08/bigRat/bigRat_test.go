@@ -109,3 +109,11 @@ func c128_mandelbrot(z complex128) color.Color {
 	}
 	return color.Black
 }
+
+func BenchmarkMandelbrot(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		xr := big.NewRat(0, 1)
+		xi := big.NewRat(-1, 1)
+		mandelbrot(xr, xi)
+	}
+}
