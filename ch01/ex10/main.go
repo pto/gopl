@@ -30,7 +30,7 @@ func fetch(url string, index int, ch chan<- string) {
 		return
 	}
 
-	filename := fmt.Sprintf("fetchall.%d.%d", os.Getpid(), index)
+	filename := fmt.Sprintf("ex10.%d.%d", os.Getpid(), index)
 	f, err := os.Create(filename)
 	if err != nil {
 		ch <- fmt.Sprintf("while opening %s: %v", filename, err)
@@ -40,7 +40,7 @@ func fetch(url string, index int, ch chan<- string) {
 	resp.Body.Close() // don't leak resources
 	f.Close()
 	if err != nil {
-		ch <- fmt.Sprintf("while reading %s: %v", url, err)
+		ch <- fmt.Sprintf("while copying %s to %s: %v", url, filename, err)
 		return
 	}
 	secs := time.Since(start).Seconds()
