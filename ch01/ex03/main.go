@@ -19,7 +19,8 @@ func main() {
 func timeFunc(heading string, f func([]string) string) {
 	start := time.Now()
 	f(os.Args[1:])
-	fmt.Println(heading, time.Now().Sub(start))
+	duration := time.Now().Sub(start)
+	fmt.Println(heading, duration)
 }
 
 // ConcatIndex concatenates slice elements using a traditional for loop.
