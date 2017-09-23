@@ -25,5 +25,3 @@ func main() {
 		fmt.Println("Status code:", resp.Status)
 	}
 }
-
-//!-
