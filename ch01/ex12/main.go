@@ -19,7 +19,7 @@ import (
 
 var palette = []color.Color{color.Black}
 
-const paletteSize = 255
+const paletteSize = math.MaxUint8
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -33,13 +33,13 @@ func fillPalette() {
 		palette = append(palette, color.RGBA{uint8(r), uint8(g), uint8(b), 255})
 	}
 
-	for i := 1; i < paletteSize; i += 3 {
+	for i := 0; i < paletteSize; i += 3 {
 		addToPalette(paletteSize-i, i, 0) // Red turning to Green
 	}
-	for i := 1; i < paletteSize; i += 3 {
+	for i := 0; i < paletteSize; i += 3 {
 		addToPalette(0, paletteSize-i, i) // Green turning to Blue
 	}
-	for i := 1; i < paletteSize; i += 3 {
+	for i := 0; i < paletteSize; i += 3 {
 		addToPalette(i, 0, paletteSize-i) // Blue turning to Red
 	}
 }
@@ -56,7 +56,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	phaseStep, err := strconv.ParseFloat(r.Form.Get("phaseStep"), 64)
 	if err != nil {
-		phaseStep = 0.01
+		phaseStep = 0.1
 	}
 	cycles, err := strconv.ParseFloat(r.Form.Get("cycles"), 64)
 	if err != nil {
@@ -83,8 +83,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
 	nframes int, delay int, size int, res float64) {
-	fmt.Printf("freq=%f, phaseStep=%f, cycles=%f, nframes=%d, delay=%d, "+
-		"size=%d, res=%f\n", freq, phaseStep, cycles, nframes, delay, size, res)
+	fmt.Printf("freq=%v, phaseStep=%v, cycles=%v, nframes=%d, delay=%d, "+
+		"size=%d, res=%v\n", freq, phaseStep, cycles, nframes, delay, size, res)
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
 	rect := image.Rect(0, 0, 2*size+1, 2*size+1)
@@ -96,7 +96,7 @@ func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
 			y := math.Sin(t*freq + phase)
 			img.SetColorIndex(size+int(x*float64(size)+0.5),
 				size+int(y*float64(size)+0.5),
-				uint8(t*(paletteSize-1)/upperLimit)+1)
+				uint8(t*paletteSize/upperLimit)+1)
 		}
 		phase += phaseStep
 		anim.Delay = append(anim.Delay, delay)
