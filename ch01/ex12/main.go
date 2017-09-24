@@ -83,8 +83,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func lissajous(out io.Writer, freq float64, phaseStep float64, cycles float64,
 	nframes int, delay int, size int, res float64) {
-	fmt.Printf("freq=%v, phaseStep=%v, cycles=%v, nframes=%d, delay=%d, "+
-		"size=%d, res=%v\n", freq, phaseStep, cycles, nframes, delay, size, res)
+	fmt.Printf("freq=%g, phaseStep=%g, cycles=%g, nframes=%d, delay=%d, "+
+		"size=%d, res=%g\n", freq, phaseStep, cycles, nframes, delay, size, res)
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
 	rect := image.Rect(0, 0, 2*size+1, 2*size+1)
