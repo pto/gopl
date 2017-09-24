@@ -1,8 +1,7 @@
-// Ex02 converts its numeric arguments (or standard input) to various units.
+// Ex02 converts its numeric arguments to various units.
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -11,16 +10,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) > 1 {
-		for _, arg := range os.Args[1:] {
-			display(arg)
-		}
-	} else {
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Split(bufio.ScanWords)
-		for scanner.Scan() {
-			display(scanner.Text())
-		}
+	for _, arg := range os.Args[1:] {
+		display(arg)
 	}
 }
 
@@ -34,6 +25,7 @@ func display(val string) {
 		fmt.Fprintf(os.Stderr, "ex02: %v\n", err)
 		return
 	}
+
 	f := conv.Fahrenheit(x)
 	c := conv.Celsius(x)
 	fmt.Printf("%s = %s, %s = %s\n", f, conv.FToC(f), c, conv.CToF(c))
