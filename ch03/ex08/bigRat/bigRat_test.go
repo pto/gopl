@@ -44,7 +44,7 @@ func TestAddMult(t *testing.T) {
 			fi, _ := zi.Float64()
 			z := x + y
 			if !close(fr, real(z)) || !close(fi, imag(z)) {
-				t.Error("cadd(%v, %v, %v, %v) is %v,%v, should be %v,%v",
+				t.Errorf("cadd(%v, %v, %v, %v) is %v,%v, should be %v,%v",
 					xr, xi, yr, yi, zr, zi, real(z), imag(z))
 			}
 			zr, zi = cmult(xr, xi, yr, yi)
@@ -52,7 +52,7 @@ func TestAddMult(t *testing.T) {
 			fi, _ = zi.Float64()
 			z = x * y
 			if !close(fr, real(z)) || !close(fi, imag(z)) {
-				t.Errorf("cmult(%f, %f, %f, %f) is %g,%g, should be %g,%g",
+				t.Errorf("cmult(%v, %v, %v, %v) is %g,%g, should be %g,%g",
 					xr, xi, yr, yi, fr, fi, real(z), imag(z))
 			}
 		}
