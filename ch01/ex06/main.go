@@ -1,4 +1,4 @@
-// Ex05 generates GIF animations of random Lissajous curves in multiple colors.
+// Ex06 generates GIF animations of random Lissajous curves in multiple colors.
 package main
 
 import (
