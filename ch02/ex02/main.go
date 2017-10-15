@@ -1,7 +1,8 @@
-// Ex02 converts its numeric arguments to various units.
+// Ex02 converts its numeric arguments (or standard input) to various units.
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -10,8 +11,16 @@ import (
 )
 
 func main() {
-	for _, arg := range os.Args[1:] {
-		display(arg)
+	if len(os.Args) > 1 {
+		for _, arg := range os.Args[1:] {
+			display(arg)
+		}
+	} else {
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Split(bufio.ScanWords)
+		for scanner.Scan() {
+			display(scanner.Text())
+		}
 	}
 }
 
