@@ -29,48 +29,36 @@ func TestPopCounts(t *testing.T) {
 
 func BenchmarkPopCount(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			PopCount(v)
-		}
+		PopCount(0x1234567890abcdef)
 	}
 }
 
 func BenchmarkPopCountLoop1(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			PopCountLoop1(v)
-		}
+		PopCountLoop1(0x1234567890abcdef)
 	}
 }
 
 func BenchmarkPopCountLoop2(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			PopCountLoop2(v)
-		}
+		PopCountLoop2(0x1234567890abcdef)
 	}
 }
 
 func BenchmarkPopCountShift(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			PopCountShift(v)
-		}
+		PopCountShift(0x1234567890abcdef)
 	}
 }
 
 func BenchmarkPopCountMask(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			PopCountMask(v)
-		}
+		PopCountMask(0x1234567890abcdef)
 	}
 }
 
 func BenchmarkOnesCount(b *testing.B) {
 	for i := 1; i < b.N; i++ {
-		for _, v := range testWords {
-			bits.OnesCount64(v)
-		}
+		bits.OnesCount64(0x1234567890abcdef)
 	}
 }
