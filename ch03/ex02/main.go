@@ -1,9 +1,11 @@
-// Ex02 computes an SVG rendering of 3-D surface functions.
+// Ex02 computes an SVG rendering of 3-D surface functions, based on a
+// command line parameter.
 package main
 
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 const (
@@ -17,9 +19,25 @@ const (
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
-var f = saddle
+var f func(float64, float64) float64
 
 func main() {
+	if len(os.Args) == 2 {
+		switch os.Args[1] {
+		case "eggbox":
+			f = eggbox
+		case "moguls":
+			f = moguls
+		case "saddle":
+			f = saddle
+		default:
+			fmt.Fprintln(os.Stderr, "Usage: ex02 eggbox|moguls|saddle")
+			os.Exit(1)
+		}
+	} else {
+		f = eggbox
+	}
+
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
