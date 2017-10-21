@@ -38,63 +38,49 @@ func main() {
 	fmt.Println("</svg>")
 }
 
+// Map 2D coordinates to 3D surface
+func mapping(i, j int) (x, y, z float64) {
+	x = xyrange * (float64(i)/cells - 0.5)
+	y = xyrange * (float64(j)/cells - 0.5)
+	z = f(x, y)
+	return x, y, z
+}
+
 func limits() (zmax, zmin float64) {
 	zmax = -math.MaxFloat64
 	zmin = math.MaxFloat64
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			x := xyrange * (float64(i)/cells - 0.5)
-			y := xyrange * (float64(j)/cells - 0.5)
-			z := f(x, y)
-			if z > zmax {
-				zmax = z
-			}
-			if z < zmin {
-				zmin = z
+			_, _, z := mapping(i, j)
+			if !math.IsNaN(z) {
+				if z > zmax {
+					zmax = z
+				}
+				if z < zmin {
+					zmin = z
+				}
 			}
 		}
 	}
 	return zmax, zmin
 }
 
-func corner(i, j int) (float64, float64) {
-	// Find point (x,y) at corner of cell (i,j).
-	x := xyrange * (float64(i)/cells - 0.5)
-	y := xyrange * (float64(j)/cells - 0.5)
-
-	// Compute surface height z.
-	z := f(x, y)
+func corner(i, j int) (sx, sy float64) {
+	x, y, z := mapping(i, j)
 
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
-	sx := width/2 + (x-y)*cos30*xyscale
-	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+	sx = width/2 + (x-y)*cos30*xyscale
+	sy = height/2 + (x+y)*sin30*xyscale - z*zscale
 	return sx, sy
 }
 
 func color(i, j int, zmax, zmin float64) (r, g, b int) {
-	// Find point (x,y) at corner of cell (i,j).
-	x := xyrange * (float64(i)/cells - 0.5)
-	y := xyrange * (float64(j)/cells - 0.5)
-
-	// Compute surface height z.
-	z := f(x, y)
+	_, _, z := mapping(i, j)
 
 	zrange := zmax - zmin
 	r = int(255 * (z - zmin) / zrange)
 	g = 0
 	b = int(255 * (zmax - z) / zrange)
-	if r < 0 {
-		r = 0
-	}
-	if r > 255 {
-		r = 255
-	}
-	if b < 0 {
-		b = 0
-	}
-	if b > 255 {
-		b = 255
-	}
 	return r, g, b
 }
 
