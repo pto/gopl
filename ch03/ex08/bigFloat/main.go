@@ -9,12 +9,12 @@ import (
 	"os"
 )
 
-const prec = 64
+const prec = 128
 
 func main() {
 	const (
 		x, y                   = 0.0, 1.0
-		zoom                   = 1e17 // point at which artifacts appear
+		zoom                   = 1e37 // point at which artifacts appear
 		radius                 = 2.0 / zoom
 		xmin, ymin, xmax, ymax = x - radius, y - radius, x + radius, y + radius
 		width, height          = 1024, 1024
@@ -32,8 +32,8 @@ func main() {
 		for px := 0; px < width; px++ {
 			x := big.NewFloat(float64(px)).SetPrec(prec)
 			w := big.NewFloat(width).SetPrec(prec)
-			r := big.NewFloat(xmax - xmin)
-			m := big.NewFloat(xmin)
+			r := big.NewFloat(xmax - xmin).SetPrec(prec)
+			m := big.NewFloat(xmin).SetPrec(prec)
 			x.Quo(x, w)
 			x.Mul(x, r)
 			x.Add(x, m)
