@@ -17,8 +17,8 @@ func main() {
 	)
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	xdelta := float64(1) / width / 2 * (xmax - xmin)
-	ydelta := float64(1) / height / 2 * (ymax - ymin)
+	xdelta := float64(1) / width / 4 * (xmax - xmin)
+	ydelta := float64(1) / height / 4 * (ymax - ymin)
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
