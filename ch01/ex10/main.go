@@ -33,7 +33,7 @@ func fetch(url string, index int, ch chan<- string) {
 	filename := fmt.Sprintf("ex10.%d.%d", os.Getpid(), index)
 	f, err := os.Create(filename)
 	if err != nil {
-		ch <- fmt.Sprintf("while opening %s: %v", filename, err)
+		ch <- fmt.Sprint(err)
 		return
 	}
 	nbytes, err := io.Copy(f, resp.Body)
