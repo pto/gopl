@@ -26,5 +26,3 @@ fetchall \
 	http://hao123.com \
 	http://google.de \
 	http://google.ru \
-	\
-	http://gannett.co
