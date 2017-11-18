@@ -1,4 +1,4 @@
-// Ex07 outputs the content found at a URL using io.Copy.
+// Ex07 prints the content found at each specified URL, using io.Copy.
 package main
 
 import (
