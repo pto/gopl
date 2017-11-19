@@ -30,8 +30,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
+	if err := r.ParseForm(); err != nil {
 		log.Print(err)
 		return
 	}

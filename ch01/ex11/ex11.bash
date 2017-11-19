@@ -26,3 +26,4 @@ fetchall \
 	http://hao123.com \
 	http://google.de \
 	http://google.ru \
+	https://127.0.0.2  # times out

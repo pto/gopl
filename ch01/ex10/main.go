@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+var pid = os.Getpid()
+
 func main() {
 	start := time.Now()
 	ch := make(chan string)
@@ -19,7 +21,7 @@ func main() {
 	for range os.Args[1:] {
 		fmt.Println(<-ch) // receive from channel ch
 	}
-	fmt.Printf("%.2fs elapsed [%d]\n", time.Since(start).Seconds(), os.Getpid())
+	fmt.Printf("%.2fs elapsed [%d]\n", time.Since(start).Seconds(), pid)
 }
 
 func fetch(url string, index int, ch chan<- string) {
@@ -30,7 +32,7 @@ func fetch(url string, index int, ch chan<- string) {
 		return
 	}
 
-	filename := fmt.Sprintf("ex10.%d.%d", os.Getpid(), index)
+	filename := fmt.Sprintf("ex10.%d.%d", pid, index)
 	f, err := os.Create(filename)
 	if err != nil {
 		ch <- fmt.Sprint(err)
