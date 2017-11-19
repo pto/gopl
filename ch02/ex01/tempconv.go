@@ -4,11 +4,15 @@ package tempconv
 import "fmt"
 
 type (
-	Celsius    float64
+	// Celsius is a temperature in ºC.
+	Celsius float64
+	// Fahrenheit is a temperature in ºF.
 	Fahrenheit float64
-	Kelvin     float64
+	// Kelvin is a temperature in ºK.
+	Kelvin float64
 )
 
+// Reference temperatures
 const (
 	AbsoluteZeroC Celsius = -273.15
 	FreezingC     Celsius = 0
