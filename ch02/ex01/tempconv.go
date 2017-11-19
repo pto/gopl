@@ -4,11 +4,11 @@ package tempconv
 import "fmt"
 
 type (
-	// Celsius is a temperature in ºC
+	// Celsius is a temperature in ºC.
 	Celsius float64
-	// Fahrenheit is a temperature in ºF
+	// Fahrenheit is a temperature in ºF.
 	Fahrenheit float64
-	// Kelvin is a temperature in ºK
+	// Kelvin is a temperature in ºK.
 	Kelvin float64
 )
 
