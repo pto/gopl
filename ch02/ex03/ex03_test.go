@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-var testWords = [...]uint64{0x1234567890abcdef, 0x0, 0x800000000,
-	0x8000000000000000, 0xFFFFFFFFFFFFFFFF}
-
 func TestPopCounts(t *testing.T) {
+	var testWords = [...]uint64{0x1234567890abcdef, 0x0, 0x800000000,
+		0x8000000000000000, 0xFFFFFFFFFFFFFFFF}
+
 	check := func(name string, f func(uint64) int) {
 		for _, v := range testWords {
 			result := f(v)
