@@ -33,7 +33,7 @@ func ConcatIndex(slice []string) string {
 	return s
 }
 
-// ConcatRange concatenates slice elements using a for range loop.
+// ConcatRange concatenates slice elements using a for-range loop.
 func ConcatRange(slice []string) string {
 	var s, sep string
 	for _, elem := range slice {

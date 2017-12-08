@@ -1,4 +1,4 @@
-// Ex02 prints the index and value of each command line argument, one per line.
+// Ex02 prints the index and value of each of its arguments, one per line.
 package main
 
 import (
