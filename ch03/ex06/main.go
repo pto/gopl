@@ -51,8 +51,7 @@ func iterationColor(iter float64) color.Color {
 	const contrast = 15
 	if iter < 0 {
 		return color.Black
-	} else {
-		return color.YCbCr{128, 255 - uint8(contrast*iter),
-			uint8(contrast*iter) - 255}
 	}
+	return color.YCbCr{128, 255 - uint8(contrast*iter),
+		uint8(contrast*iter) - 255}
 }

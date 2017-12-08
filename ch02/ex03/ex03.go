@@ -31,7 +31,7 @@ func PopCountLoop1(x uint64) int {
 	return count
 }
 
-// PopCountLoop1 returns the population count of x, using a loop (version 2).
+// PopCountLoop2 returns the population count of x, using a loop (version 2).
 func PopCountLoop2(x uint64) int {
 	count := 0
 	for i := 0; i < 8; i++ {
