@@ -32,7 +32,7 @@ func fetch(url string, index int, ch chan<- string) {
 		return
 	}
 
-	filename := fmt.Sprintf("ex10.%d.%d", pid, index)
+	filename := fmt.Sprintf("ex10.%d.%d", index, pid)
 	f, err := os.Create(filename)
 	if err != nil {
 		ch <- fmt.Sprint(err)
