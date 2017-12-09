@@ -1,4 +1,4 @@
-// Ex08 outputs the content found at a URL, and adds "http://" if there is no
+// Ex08 outputs the content found at a URL, adding "http://" if there is no
 // http (or https) protocol.
 package main
 
