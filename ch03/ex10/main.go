@@ -8,15 +8,15 @@ import (
 )
 
 func main() {
-	for i := 1; i < len(os.Args); i++ {
-		fmt.Printf("  %s\n", comma(os.Args[i]))
+	for _, arg := range os.Args[1:] {
+		fmt.Println(comma(arg))
 	}
 }
 
 // comma inserts commas in a non-negative decimal integer string.
 func comma(s string) string {
 	var buf bytes.Buffer
-	pos := (len(s)-1)%3 + 1 // initially, # digits without a comma
+	pos := (len(s)-1)%3 + 1 // number of digits before first comma
 	buf.WriteString(s[:pos])
 	for pos < len(s) {
 		buf.WriteByte(',')
