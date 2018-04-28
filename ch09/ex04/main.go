@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"strconv"
 	"time"
 )
@@ -23,6 +24,7 @@ func main() {
 		usage()
 	}
 
+	fmt.Println("Number of goroutines:", runtime.NumGoroutine())
 	root := make(chan int)
 	next := root
 	start := time.Now()
@@ -31,12 +33,14 @@ func main() {
 		next = make(chan int)
 		go stage(prev, next)
 	}
-	fmt.Println("Starting goroutines:", time.Since(start))
+	fmt.Println("Starting goroutines: ", time.Since(start))
+	fmt.Println("Number of goroutines:", runtime.NumGoroutine())
 
 	start = time.Now()
 	root <- 0
-	fmt.Println("Result:", <-next)
-	fmt.Println("Transiting pipeline:", time.Since(start))
+	fmt.Println("Result:              ", <-next)
+	fmt.Println("Transiting pipeline: ", time.Since(start))
+	fmt.Println("Number of goroutines:", runtime.NumGoroutine())
 }
 
 func usage() {
