@@ -35,8 +35,8 @@ func main() {
 
 	start = time.Now()
 	root <- 0
-	fmt.Println("Transiting pipeline:", time.Since(start))
 	fmt.Println("Result:", <-next)
+	fmt.Println("Transiting pipeline:", time.Since(start))
 }
 
 func usage() {
