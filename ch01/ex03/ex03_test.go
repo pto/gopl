@@ -19,8 +19,11 @@ func TestConcat(t *testing.T) {
 		expected string
 	}{
 		{[]string{}, ""},
+		{[]string{" "}, " "},
 		{[]string{"a"}, "a"},
+		{[]string{" a "}, " a "},
 		{[]string{"first", "second"}, "first second"},
+		{[]string{"first ", " second"}, "first   second"},
 		{input, strings.Join(input, " ")},
 	}
 	for _, c := range cases {
