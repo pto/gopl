@@ -1,5 +1,5 @@
-// Ex01 prints all command line arguments, including os.Args[0], the
-// name of the command that invoked it.
+// Ex01 prints os.Args[0], the name of the command that invoked it, and all
+// command-line arguments.
 package main
 
 import (
