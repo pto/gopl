@@ -20,6 +20,7 @@ func TestConcat(t *testing.T) {
 	}{
 		{[]string{}, ""},
 		{[]string{" "}, " "},
+		{[]string{" ", " "}, "   "},
 		{[]string{"a"}, "a"},
 		{[]string{" a "}, " a "},
 		{[]string{"first", "second"}, "first second"},
