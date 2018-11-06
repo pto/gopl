@@ -6,6 +6,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
+	"strings"
 )
 
 func main() {
@@ -27,14 +29,15 @@ func main() {
 
 	for line, filemap := range counts {
 		linecount := 0
-		filenames, sep := "", ""
+		filenames := []string{}
 		for filename, filecount := range filemap {
 			linecount += filecount
-			filenames += sep + filename
-			sep = ", "
+			filenames = append(filenames, filename)
 		}
 		if linecount > 1 {
-			fmt.Printf("%d\t%s (%s)\n", linecount, line, filenames)
+			sort.Strings(filenames) // make the order deterministic for tests
+			fmt.Printf("%d\t%s (%s)\n", linecount, line,
+				strings.Join(filenames, ", "))
 		}
 	}
 }
