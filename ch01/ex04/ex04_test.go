@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// Empty test to keep the testing package in the imports.
 func Test_countLines(t *testing.T) {
 }
 
