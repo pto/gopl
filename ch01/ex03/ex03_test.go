@@ -44,12 +44,6 @@ func TestConcat(t *testing.T) {
 				c.input, result, c.expected)
 		}
 	}
-	s1 := ConcatIndex(input)
-	s2 := ConcatRange(input)
-	s3 := ConcatJoin(input)
-	if s1 != s2 || s2 != s3 {
-		t.Error("concat functions differ")
-	}
 }
 
 func BenchmarkConcatIndex(b *testing.B) {
